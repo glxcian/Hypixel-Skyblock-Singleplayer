@@ -26,9 +26,9 @@ public enum SkyBlockRarity {
 	ADMIN("ADMIN", ChatFormatting.DARK_RED);
 
 	/*
-	 * Hypixel's generic Diamond Pickaxe is UNCOMMON. Other vanilla items and
-	 * block items default to COMMON until an item-specific SkyBlock mapping
-	 * is available; enchanted/custom variants are resolved by their custom ID.
+	 * Vanilla equipment tiers are based on the Hypixel SkyBlock Wiki's
+	 * vanilla pickaxe, sword, and armor tables. Other vanilla items and block
+	 * items default to COMMON; custom variants resolve through their custom ID.
 	 */
 	private static final Map<String, SkyBlockRarity> VANILLA_RARITIES = Map.ofEntries(
 		Map.entry("minecraft:diamond_pickaxe", UNCOMMON),
