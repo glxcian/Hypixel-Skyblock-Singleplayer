@@ -18,8 +18,8 @@ import net.minecraft.world.item.component.CustomData;
 
 /**
  * SkyBlock items are vanilla item stacks identified by custom data.
- * No custom Item registrations are needed, so their textures always come
- * from the vanilla base item.
+ * Legacy registry entries exist only long enough to migrate older world saves;
+ * all newly created items use vanilla base items and vanilla textures.
  */
 public final class CustomItems {
 	private static final String ITEM_ID_KEY = "singleplayerhsfeatures:item_id";
