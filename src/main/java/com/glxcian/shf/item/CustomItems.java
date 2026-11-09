@@ -12,8 +12,11 @@ import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.Items;
 import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.PlayerHeadItem;
 import net.minecraft.world.item.Rarity;
 import net.minecraft.world.item.component.CustomData;
+import net.minecraft.world.item.component.ResolvableProfile;
+import net.minecraft.world.level.block.Blocks;
 
 public final class CustomItems {
 	private static final String PROMISING_PICKAXE_MARKER = "singleplayerhsfeatures:promising_pickaxe";
@@ -32,6 +35,11 @@ public final class CustomItems {
 				.component(DataComponents.ITEM_NAME, Component.literal("Compactor"))
 		)
 	);
+
+	/** Mining collection heads. The profile names are temporary visual placeholders. */
+	public static Item GLACITE;
+	public static Item TUNGSTEN;
+	public static Item UMBER;
 
 	/** Compatibility alias. Promising Pickaxes are marked vanilla iron pickaxe stacks. */
 	public static final Item PROMISING_PICKAXE = Items.IRON_PICKAXE;
@@ -57,6 +65,10 @@ public final class CustomItems {
 	}
 
 	public static void initialize() {
+		registerMiningHead("glacite", "Glacite", "MHF_Stone");
+		registerMiningHead("tungsten", "Tungsten", "MHF_IronGolem");
+		registerMiningHead("umber", "Umber", "MHF_Creeper");
+
 		for (EnchantedResourceCatalog.Resource resource : EnchantedResourceCatalog.RESOURCES) {
 			ResourceKey<Item> key = ResourceKey.create(
 				Registries.ITEM,
@@ -75,6 +87,32 @@ public final class CustomItems {
 				new Item(properties)
 			);
 			ENCHANTED_RESOURCES.put(resource.path(), item);
+		}
+	}
+
+	private static void registerMiningHead(String path, String name, String placeholderProfile) {
+		ResourceKey<Item> key = ResourceKey.create(
+			Registries.ITEM,
+			Identifier.fromNamespaceAndPath("singleplayerhsfeatures", path)
+		);
+		Item item = Registry.register(
+			BuiltInRegistries.ITEM,
+			key,
+			new PlayerHeadItem(
+				Blocks.PLAYER_HEAD,
+				Blocks.PLAYER_WALL_HEAD,
+				new Item.Properties()
+					.setId(key)
+					.rarity(Rarity.UNCOMMON)
+					.component(DataComponents.ITEM_NAME, Component.literal(name))
+					.component(DataComponents.PROFILE, ResolvableProfile.createUnresolved(placeholderProfile))
+			)
+		);
+		switch (path) {
+			case "glacite" -> GLACITE = item;
+			case "tungsten" -> TUNGSTEN = item;
+			case "umber" -> UMBER = item;
+			default -> throw new IllegalArgumentException("Unknown mining collection head: " + path);
 		}
 	}
 
