@@ -106,7 +106,14 @@ public final class EnchantmentStatEffects {
 	}
 
 	public static int getFortuneBonus(ItemStack stack, boolean farming) {
-		return farming ? getFarmingFortuneBonus(stack) : getMiningFortuneBonus(stack);
+		if (farming) {
+			return getFarmingFortuneBonus(stack);
+		}
+		return hasSmeltingTouch(stack) ? 0 : getMiningFortuneBonus(stack);
+	}
+
+	public static boolean hasSmeltingTouch(ItemStack stack) {
+		return getEnchantmentLevel(stack, "smelting_touch") > 0;
 	}
 
 	public static int getSkyBlockDamagePercent(ItemStack stack, LivingEntity target) {
