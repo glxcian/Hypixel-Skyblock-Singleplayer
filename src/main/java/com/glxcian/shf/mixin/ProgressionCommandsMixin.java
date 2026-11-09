@@ -7,7 +7,6 @@ import net.minecraft.commands.Commands;
 import net.minecraft.commands.CommandBuildContext;
 import net.minecraft.network.chat.Component;
 import net.minecraft.server.level.ServerPlayer;
-import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -81,7 +80,26 @@ public abstract class ProgressionCommandsMixin {
 			}));
 		commands.getDispatcher().register(Commands.literal("compactor")
 			.executes(command -> {
-				giveItem(command.getSource().getPlayerOrException(), CustomItems.COMPACTOR, "Compactor");
+				giveStack(command.getSource().getPlayerOrException(),
+					CustomItems.createPersonalCompactor(), "Personal Compactor");
+				return 1;
+			}));
+		commands.getDispatcher().register(Commands.literal("glacite")
+			.executes(command -> {
+				giveStack(command.getSource().getPlayerOrException(),
+					CustomItems.createMiningResource("glacite"), "Glacite");
+				return 1;
+			}));
+		commands.getDispatcher().register(Commands.literal("tungsten")
+			.executes(command -> {
+				giveStack(command.getSource().getPlayerOrException(),
+					CustomItems.createMiningResource("tungsten"), "Tungsten");
+				return 1;
+			}));
+		commands.getDispatcher().register(Commands.literal("umber")
+			.executes(command -> {
+				giveStack(command.getSource().getPlayerOrException(),
+					CustomItems.createMiningResource("umber"), "Umber");
 				return 1;
 			}));
 		commands.getDispatcher().register(Commands.literal("promisingpickaxe")
@@ -115,8 +133,7 @@ public abstract class ProgressionCommandsMixin {
 			: "Given Promising Pickaxe."));
 	}
 
-	private static void giveItem(ServerPlayer player, Item item, String itemName) {
-		ItemStack stack = new ItemStack(item);
+	private static void giveStack(ServerPlayer player, ItemStack stack, String itemName) {
 		if (!player.getInventory().add(stack) && !stack.isEmpty()) {
 			player.drop(stack, false, net.minecraft.util.Prediction.SERVER_ONLY);
 		}
