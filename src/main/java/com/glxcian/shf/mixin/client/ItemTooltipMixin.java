@@ -151,8 +151,10 @@ public abstract class ItemTooltipMixin {
 				.withStyle(ChatFormatting.GRAY));
 			stats.add(Component.literal("(Max +250 Mining Speed)").withStyle(ChatFormatting.DARK_GRAY));
 			stats.add(Component.empty());
-			stats.add(Component.literal("Blocks Mined: " + blocksMined).withStyle(ChatFormatting.GREEN));
-			stats.add(Component.literal("Mining Speed: " + storedPotential).withStyle(ChatFormatting.GREEN));
+			stats.add(Component.literal("Blocks Mined: ").withStyle(ChatFormatting.GRAY)
+				.append(Component.literal(Long.toString(blocksMined)).withStyle(ChatFormatting.GREEN)));
+			stats.add(Component.literal("Mining Speed: ").withStyle(ChatFormatting.GRAY)
+				.append(Component.literal("+" + storedPotential).withStyle(ChatFormatting.GREEN)));
 			stats.add(Component.empty());
 			stats.add(Component.literal("This item can be reforged!").withStyle(ChatFormatting.GRAY));
 			stats.add(Component.literal("UNCOMMON PICKAXE").withStyle(ChatFormatting.GREEN));
