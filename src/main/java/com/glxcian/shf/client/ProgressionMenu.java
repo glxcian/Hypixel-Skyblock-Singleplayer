@@ -279,7 +279,7 @@ public final class ProgressionMenu extends ChestMenu {
 			List<Item> items = ProgressionMenuController.getCollectionItems(player, this.collectionType);
 			int index = this.collectionPage * COLLECTION_ITEMS_PER_PAGE + itemSlot;
 			if (index < items.size()) {
-				String itemId = BuiltInRegistries.ITEM.getKey(items.get(index)).toString();
+				String itemId = CollectionRegistry.getItemId(items.get(index));
 				ProgressionMenuController.openCollectionDetail(player, this.collectionType, this.collectionPage, itemId);
 			}
 		}
@@ -352,8 +352,8 @@ public final class ProgressionMenu extends ChestMenu {
 					"View your " + collectionCategoryName(collectionType) + " Collections!");
 				for (int index = start; index < end; index++) {
 					Item item = items.get(index);
-					ItemStack stack = item.getDefaultInstance();
-					String itemId = BuiltInRegistries.ITEM.getKey(item).toString();
+					String itemId = CollectionRegistry.getItemId(item);
+					ItemStack stack = CollectionRegistry.createStack(itemId);
 					long count = collectionType == null
 						? PlayerProgression.getCollectionCount(player, itemId)
 						: PlayerProgression.getCollectionCount(player, itemId, collectionType);
@@ -374,11 +374,8 @@ public final class ProgressionMenu extends ChestMenu {
 				set(container, 53, Items.PAPER, "Page " + (collectionPage + 1), ChatFormatting.GRAY);
 			}
 			case COLLECTION_DETAIL -> {
-				Item item = BuiltInRegistries.ITEM.get(
-					net.minecraft.resources.Identifier.parse(detailItemId)
-				).orElseThrow(() -> new IllegalStateException("Unknown collection item: " + detailItemId)).value();
-				ItemStack stack = item.getDefaultInstance();
-				String itemId = BuiltInRegistries.ITEM.getKey(item).toString();
+				ItemStack stack = CollectionRegistry.createStack(detailItemId);
+				String itemId = detailItemId;
 				long count = collectionType == null
 					? PlayerProgression.getCollectionCount(player, itemId)
 					: PlayerProgression.getCollectionCount(player, itemId, collectionType);
