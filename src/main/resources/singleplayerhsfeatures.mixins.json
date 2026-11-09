@@ -5,6 +5,7 @@
     "mixins": [
         "AttackCooldownMixin",
         "ItemDurabilityMixin",
+        "CustomItemRegistrationMixin",
         "EntityDataAccessMixin",
         "MobLevelMixin",
         "MobProfileSpawnMixin",
