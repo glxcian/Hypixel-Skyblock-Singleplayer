@@ -27,7 +27,7 @@ public enum SkyBlockRarity {
 
 	/*
 	 * Vanilla equipment tiers are based on the Hypixel SkyBlock Wiki's
-	 * vanilla pickaxe, sword, and armor tables. Other vanilla items and block
+	 * vanilla tool, sword, and armor tables. Other vanilla items and block
 	 * items default to COMMON; custom variants resolve through their custom ID.
 	 */
 	private static final Map<String, SkyBlockRarity> VANILLA_RARITIES = Map.ofEntries(
