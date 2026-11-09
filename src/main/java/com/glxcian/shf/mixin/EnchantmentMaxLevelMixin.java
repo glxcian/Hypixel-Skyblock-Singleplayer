@@ -1,13 +1,21 @@
 package com.glxcian.shf.mixin;
 
 import java.util.Map;
+import net.minecraft.core.component.DataComponentType;
 import net.minecraft.network.chat.ComponentContents;
 import net.minecraft.network.chat.contents.TranslatableContents;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.world.item.ItemInstance;
+import net.minecraft.world.item.enchantment.ConditionalEffect;
 import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.EnchantmentValueEffect;
+import org.apache.commons.lang3.mutable.MutableFloat;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+
+import java.util.List;
 
 @Mixin(Enchantment.class)
 public abstract class EnchantmentMaxLevelMixin {
@@ -34,6 +42,26 @@ public abstract class EnchantmentMaxLevelMixin {
 		Integer level = SINGLEPLAYERHSFEATURES_MAX_LEVELS.get(translated.getKey());
 		if (level != null && level > cir.getReturnValue()) {
 			cir.setReturnValue(level);
+		}
+	}
+
+	@Inject(
+		method = "modifyItemFilteredCount",
+		at = @At("HEAD"),
+		cancellable = true
+	)
+	private void singleplayerhsfeatures$disableVanillaFortuneDrops(
+		DataComponentType<List<ConditionalEffect<EnchantmentValueEffect>>> effectType,
+		ServerLevel serverLevel,
+		int enchantmentLevel,
+		ItemInstance itemStack,
+		MutableFloat value,
+		org.spongepowered.asm.mixin.injection.callback.CallbackInfo ci
+	) {
+		ComponentContents contents = ((Enchantment) (Object) this).description().getContents();
+		if (contents instanceof TranslatableContents translated
+			&& "enchantment.minecraft.fortune".equals(translated.getKey())) {
+			ci.cancel();
 		}
 	}
 }
