@@ -133,9 +133,7 @@ public final class CollectionRegistry {
 			return "";
 		}
 		String customId = CustomItems.getCustomItemId(stack);
-		return customId != null && typeById.containsKey(customId)
-			? customId
-			: getItemId(stack.getItem());
+		return customId != null ? customId : getItemId(stack.getItem());
 	}
 
 	public static ItemStack createStack(Item item) {
