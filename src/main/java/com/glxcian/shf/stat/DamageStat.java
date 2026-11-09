@@ -22,7 +22,7 @@ public final class DamageStat {
 	}
 
 	public static OptionalInt getItemDamage(ItemStack stack) {
-		if (stack.is(com.glxcian.shf.item.CustomItems.PROMISING_PICKAXE)) {
+		if (com.glxcian.shf.item.CustomItems.isPromisingPickaxe(stack)) {
 			return OptionalInt.of(20);
 		}
 		ItemAttributeModifiers modifiers = stack.get(DataComponents.ATTRIBUTE_MODIFIERS);
