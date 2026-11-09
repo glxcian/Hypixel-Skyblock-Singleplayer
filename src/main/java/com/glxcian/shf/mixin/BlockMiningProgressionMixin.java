@@ -84,7 +84,7 @@ public abstract class BlockMiningProgressionMixin {
 				case "raw_copper", "copper_ore", "deepslate_copper_ore" -> net.minecraft.world.item.Items.COPPER_INGOT;
 				case "ancient_debris" -> net.minecraft.world.item.Items.NETHERITE_SCRAP;
 				case "clay_ball" -> net.minecraft.world.item.Items.BRICK;
-				case "cactus" -> BuiltInRegistries.ITEM.get(Identifier.fromNamespaceAndPath("minecraft", "green_dye"));
+				case "cactus" -> BuiltInRegistries.ITEM.get(Identifier.fromNamespaceAndPath("minecraft", "green_dye")).orElseThrow().value();
 				case "wet_sponge" -> net.minecraft.world.item.Items.SPONGE;
 				case "kelp" -> net.minecraft.world.item.Items.DRIED_KELP;
 				case "chorus_fruit" -> net.minecraft.world.item.Items.POPPED_CHORUS_FRUIT;
