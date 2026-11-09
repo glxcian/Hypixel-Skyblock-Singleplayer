@@ -53,14 +53,18 @@ public abstract class ItemTooltipMixin {
 			.collect(java.util.stream.Collectors.toSet());
 		lines.removeIf(line -> enchantmentNames.contains(line.getString()));
 		boolean promisingPickaxe = stack.is(com.glxcian.shf.item.CustomItems.PROMISING_PICKAXE);
-		if (!lines.isEmpty()) {
-			if (promisingPickaxe) {
-				lines.set(0, Component.literal("Promising Pickaxe").withStyle(ChatFormatting.GREEN));
-			} else if (com.glxcian.shf.item.EnchantedResourceCatalog.getByPath(
+		if (promisingPickaxe) {
+			Component name = Component.literal("Promising Pickaxe").withStyle(ChatFormatting.GREEN);
+			if (lines.isEmpty()) {
+				lines.add(name);
+			} else {
+				lines.set(0, name);
+			}
+		} else if (!lines.isEmpty()
+			&& com.glxcian.shf.item.EnchantedResourceCatalog.getByPath(
 				net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath()
 			) instanceof com.glxcian.shf.item.EnchantedResourceCatalog.Resource resource) {
-				lines.set(0, Component.literal(resource.name()).withStyle(ChatFormatting.YELLOW));
-			}
+			lines.set(0, Component.literal(resource.name()).withStyle(ChatFormatting.YELLOW));
 		}
 		int statsInsertionIndex = Math.min(1, lines.size());
 		int breakingPower = MiningSpeedStat.getBreakingPower(stack);
