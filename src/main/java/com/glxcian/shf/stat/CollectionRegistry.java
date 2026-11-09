@@ -3,12 +3,15 @@ package com.glxcian.shf.stat;
 import java.util.ArrayList;
 import java.util.EnumMap;
 import java.util.LinkedHashMap;
+import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.resources.Identifier;
 import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import com.glxcian.shf.item.CustomItems;
 import net.minecraft.world.item.ItemStack;
 
 public final class CollectionRegistry {
@@ -55,6 +58,7 @@ public final class CollectionRegistry {
 	private static Map<String, PlayerProgression.CollectionType> typeById = Map.of();
 	private static Map<PlayerProgression.CollectionType, List<Item>> itemsByType = Map.of();
 	private static List<Item> allItems = List.of();
+	private static Map<Item, String> itemIdsByItem = Map.of();
 	private static boolean initialized;
 
 	private CollectionRegistry() {
@@ -68,16 +72,19 @@ public final class CollectionRegistry {
 		Map<String, PlayerProgression.CollectionType> resolvedTypes = new LinkedHashMap<>();
 		Map<PlayerProgression.CollectionType, List<Item>> resolvedByType =
 			new EnumMap<>(PlayerProgression.CollectionType.class);
+		Map<Item, String> resolvedItemIds = new IdentityHashMap<>();
 		List<Item> resolvedAll = new ArrayList<>();
 		for (PlayerProgression.CollectionType type : PlayerProgression.CollectionType.values()) {
 			List<Item> categoryItems = new ArrayList<>();
 			for (String itemId : COLLECTION_IDS.get(type)) {
-				Identifier identifier = Identifier.parse(itemId);
-				Item item = BuiltInRegistries.ITEM.get(identifier)
-					.orElseThrow(() -> new IllegalStateException("Unknown manually registered collection item: " + itemId))
-					.value();
+				Item item = resolveItem(itemId);
 				if (resolvedTypes.putIfAbsent(itemId, type) != null) {
 					throw new IllegalStateException("Collection item is assigned to multiple categories: " + itemId);
+				}
+				String previousId = resolvedItemIds.putIfAbsent(item, itemId);
+				if (previousId != null) {
+					throw new IllegalStateException("Collection IDs " + previousId + " and " + itemId
+						+ " use the same vanilla base item.");
 				}
 				categoryItems.add(item);
 				resolvedAll.add(item);
@@ -88,6 +95,7 @@ public final class CollectionRegistry {
 		typeById = Map.copyOf(resolvedTypes);
 		itemsByType = Map.copyOf(resolvedByType);
 		allItems = List.copyOf(resolvedAll);
+		itemIdsByItem = Map.copyOf(resolvedItemIds);
 		initialized = true;
 	}
 
@@ -103,7 +111,11 @@ public final class CollectionRegistry {
 
 	public static PlayerProgression.CollectionType getType(Item item) {
 		initialize();
-		return typeById.get(BuiltInRegistries.ITEM.getKey(item).toString());
+		return typeById.get(getItemId(item));
+	}
+
+	public static PlayerProgression.CollectionType getType(ItemStack stack) {
+		return !stack.isEmpty() ? getType(getItemId(stack)) : null;
 	}
 
 	public static PlayerProgression.CollectionType getType(String itemId) {
@@ -111,8 +123,50 @@ public final class CollectionRegistry {
 		return typeById.get(itemId);
 	}
 
+	public static String getItemId(Item item) {
+		initialize();
+		return itemIdsByItem.getOrDefault(item, BuiltInRegistries.ITEM.getKey(item).toString());
+	}
+
+	public static String getItemId(ItemStack stack) {
+		if (stack.isEmpty()) {
+			return "";
+		}
+		String customId = CustomItems.getCustomItemId(stack);
+		return customId != null && typeById.containsKey(customId)
+			? customId
+			: getItemId(stack.getItem());
+	}
+
+	public static ItemStack createStack(Item item) {
+		return createStack(getItemId(item));
+	}
+
+	public static ItemStack createStack(String itemId) {
+		if (itemId.startsWith("singleplayerhsfeatures:")) {
+			return CustomItems.createMiningResource(itemId.substring("singleplayerhsfeatures:".length()));
+		}
+		Identifier identifier = Identifier.parse(itemId);
+		Item item = BuiltInRegistries.ITEM.get(identifier)
+			.orElseThrow(() -> new IllegalStateException("Unknown collection item: " + itemId)).value();
+		return item.getDefaultInstance();
+	}
+
 	public static boolean isCollectionItem(ItemStack stack) {
-		return !stack.isEmpty() && getType(stack.getItem()) != null;
+		return !stack.isEmpty() && getType(stack) != null;
+	}
+
+	private static Item resolveItem(String itemId) {
+		if (itemId.startsWith("singleplayerhsfeatures:")) {
+			Item item = CustomItems.getMiningResourceBaseItem(itemId);
+			if (item == null) {
+				throw new IllegalStateException("Unknown custom collection item: " + itemId);
+			}
+			return item;
+		}
+		Identifier identifier = Identifier.parse(itemId);
+		return BuiltInRegistries.ITEM.get(identifier)
+			.orElseThrow(() -> new IllegalStateException("Unknown collection item: " + itemId)).value();
 	}
 
 	public static int getAvailableCount(PlayerProgression.CollectionType type) {
@@ -122,7 +176,7 @@ public final class CollectionRegistry {
 	public static int getUnlockedCount(Player player, PlayerProgression.CollectionType type) {
 		int unlocked = 0;
 		for (Item item : getItems(type)) {
-			String itemId = BuiltInRegistries.ITEM.getKey(item).toString();
+			String itemId = getItemId(item);
 			PlayerProgression.CollectionType itemType = type == null ? getType(item) : type;
 			if (CollectionProgression.getLevel(
 				itemId, PlayerProgression.getCollectionCount(player, itemId, itemType)
