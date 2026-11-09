@@ -31,7 +31,7 @@ public abstract class ItemTooltipMixin {
 			return;
 		}
 		com.glxcian.shf.item.SkyBlockRarity rarity =
-			com.glxcian.shf.item.SkyBlockRarity.get(stack.getItem());
+			com.glxcian.shf.item.SkyBlockRarity.get(stack);
 		if (rarity != null) {
 			cir.setReturnValue(cir.getReturnValue().copy().withStyle(rarity.color()));
 		}
@@ -154,7 +154,6 @@ public abstract class ItemTooltipMixin {
 				.append(Component.literal("+" + storedPotential).withStyle(ChatFormatting.GREEN)));
 			stats.add(Component.empty());
 			stats.add(Component.literal("This item can be reforged!").withStyle(ChatFormatting.GRAY));
-			stats.add(Component.literal("UNCOMMON PICKAXE").withStyle(ChatFormatting.GREEN));
 		}
 		if (CollectionRegistry.isCollectionItem(stack)) {
 			stats.add(Component.literal("Collection Item").withStyle(ChatFormatting.DARK_GRAY));
@@ -168,12 +167,8 @@ public abstract class ItemTooltipMixin {
 		}
 		lines.addAll(statsInsertionIndex, stats);
 		com.glxcian.shf.item.SkyBlockRarity rarity =
-			com.glxcian.shf.item.SkyBlockRarity.get(stack.getItem());
-		if (rarity != null) {
-			lines.add(Component.literal(rarity.displayName() + " "
-				+ stack.getHoverName().getString().toUpperCase(java.util.Locale.ROOT))
-				.withStyle(rarity.color()));
-		}
+			com.glxcian.shf.item.SkyBlockRarity.get(stack);
+		lines.add(Component.literal(rarity.displayName()).withStyle(rarity.color()));
 		cir.setReturnValue(lines);
 	}
 
