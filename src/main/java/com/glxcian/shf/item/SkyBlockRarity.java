@@ -3,14 +3,17 @@ package com.glxcian.shf.item;
 import java.util.IdentityHashMap;
 import java.util.Map;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.component.DataComponents;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.Rarity;
 
 /**
- * Hypixel-style rarity metadata for registered custom items.
- * This is deliberately separate from vanilla Rarity, which only has five tiers.
+ * Hypixel-style rarity metadata. Explicit registrations support all nine
+ * SkyBlock tiers; vanilla items fall back to their base RARITY component.
  */
 public enum SkyBlockRarity {
-	COMMON("COMMON", ChatFormatting.WHITE),
+	COMMON("COMMON", ChatFormatting.GRAY),
 	UNCOMMON("UNCOMMON", ChatFormatting.GREEN),
 	RARE("RARE", ChatFormatting.BLUE),
 	EPIC("EPIC", ChatFormatting.DARK_PURPLE),
@@ -42,7 +45,21 @@ public enum SkyBlockRarity {
 		ITEMS.put(item, rarity);
 	}
 
-	public static SkyBlockRarity get(Item item) {
-		return ITEMS.get(item);
+	/** Returns explicit SkyBlock rarity, or derives one from a vanilla item's base rarity. */
+	public static SkyBlockRarity get(ItemStack stack) {
+		if (CustomItems.isPromisingPickaxe(stack)) {
+			return UNCOMMON;
+		}
+		SkyBlockRarity registered = ITEMS.get(stack.getItem());
+		if (registered != null) {
+			return registered;
+		}
+		Rarity vanilla = stack.getOrDefault(DataComponents.RARITY, Rarity.COMMON);
+		return switch (vanilla) {
+			case COMMON -> COMMON;
+			case UNCOMMON -> UNCOMMON;
+			case RARE -> RARE;
+			case EPIC -> EPIC;
+		};
 	}
 }
