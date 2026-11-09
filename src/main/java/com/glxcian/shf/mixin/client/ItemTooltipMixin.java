@@ -127,9 +127,9 @@ public abstract class ItemTooltipMixin {
 			}
 			stats.add(defenseLine);
 		});
-		int miningSpeed = promisingPickaxe
-			? MiningSpeedConfig.get(stack)
-			: player == null ? MiningSpeedStat.getItem(stack) : MiningSpeedStat.getItem(stack, player);
+		int miningSpeed = player == null
+			? MiningSpeedStat.getItem(stack)
+			: MiningSpeedStat.getItem(stack, player);
 		if (miningSpeed > 0 && !efficiencySpeedShown) {
 			MutableComponent miningSpeedLine = statLabel("\u26cf", ChatFormatting.GOLD, "Mining Speed: ")
 				.append(Component.literal("+" + miningSpeed).withStyle(ChatFormatting.GOLD));
