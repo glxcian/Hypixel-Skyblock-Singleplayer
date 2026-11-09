@@ -17,7 +17,6 @@ public final class MiningSpeedStat {
 				miningSpeed += MiningSpeedConfig.get(entity.getItemBySlot(slot));
 			}
 		}
-
 		if (entity instanceof Player player) {
 			miningSpeed += getItem(player.getMainHandItem(), player);
 		}
@@ -25,15 +24,13 @@ public final class MiningSpeedStat {
 	}
 
 	public static int getItem(ItemStack stack) {
-		return MiningSpeedConfig.get(stack) + EnchantmentStatEffects.getMiningSpeedBonus(stack);
+		return MiningSpeedConfig.get(stack)
+			+ EnchantmentStatEffects.getMiningSpeedBonus(stack)
+			+ PromisingPickaxeProgress.getMiningSpeedBonus(stack);
 	}
 
 	public static int getItem(ItemStack stack, Player player) {
-		int base = getItem(stack);
-		if (!stack.is(com.glxcian.shf.item.CustomItems.PROMISING_PICKAXE)) {
-			return base;
-		}
-		return base;
+		return getItem(stack);
 	}
 
 	public static int getBreakingPower(ItemStack stack) {
@@ -53,14 +50,6 @@ public final class MiningSpeedStat {
 		};
 	}
 
-	public static int getPromisingEfficiencyLevel(ItemStack stack) {
-		return PromisingPickaxeProgress.getEfficiencyLevel(stack);
-	}
-
-	public static int getNextPromisingEfficiencyThreshold(ItemStack stack) {
-		return PromisingPickaxeProgress.getNextEfficiencyThreshold(stack);
-	}
-
 	public static float applyToBlockSpeed(Player player, float vanillaSpeed) {
 		int miningSpeed = get(player);
 		ItemStack heldItem = player.getMainHandItem();
@@ -69,7 +58,6 @@ public final class MiningSpeedStat {
 		float multiplier = holdingPickaxe
 			? miningSpeed / (float) MiningSpeedConfig.BASE_PICKAXE_MINING_SPEED
 			: 1.0F + miningSpeed / (float) MiningSpeedConfig.BASE_PICKAXE_MINING_SPEED;
-		multiplier = Math.max(0.0F, multiplier);
-		return vanillaSpeed * multiplier;
+		return vanillaSpeed * Math.max(0.0F, multiplier);
 	}
 }
