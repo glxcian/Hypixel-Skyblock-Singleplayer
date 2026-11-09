@@ -91,7 +91,17 @@ Extend the existing Fabric mod into a singleplayer port of selected Hypixel SkyB
 - The maximum level of supported vanilla enchantments is raised to the levels listed on the wiki: Efficiency X, Sharpness VII, Protection VII, Looting V, Fortune IV, Smite VI, Bane of Arthropods VII, Power VII, Fire Aspect III, and Feather Falling X. These use vanilla effect calculations, which can differ from Hypixel's custom enchantment effects.
 - The project has no automated test suite. Both target builds and client-startup smoke tests pass. Focused gameplay checks of combat XP profile awards, collection counts, tooltip rendering, air drain, and damage labels remain outstanding; external Mojang/Realms authentication warnings occurred in the isolated dev clients but did not prevent world entry.
 
-### Local configuration
+#
+
+### Promising Pickaxe implementation
+
+- Crafting recipe: 3 Iron Blocks across the top row and 2 Sticks down the center column.
+- Base stats: +20 Damage, +3 Breaking Power, and +50 Mining Speed; rarity is Uncommon.
+- Stored Potential: +10 Mining Speed per 100 blocks mined with the pickaxe, capped at +250 bonus Mining Speed after 2,500 blocks. The total Blocks Mined counter continues increasing after the bonus cap.
+- Tooltip shows the Stored Potential ability, its rate and cap, Blocks Mined, the current Stored Potential Mining Speed bonus, reforging text, and Uncommon rarity. Decorative border is intentionally out of scope for this pass.
+- The item uses the vanilla iron pickaxe model/texture until a dedicated SkyBlock texture is explicitly added.
+
+## Local configuration
 
 The mod creates these files on first launch:
 
@@ -152,6 +162,7 @@ Armor mappings have the form `{"item":"minecraft:iron_helmet","defense":12}` ins
 - [Armor (community-maintained Hypixel SkyBlock Wiki)](https://hypixelskyblock.minecraft.wiki/w/Armor)
 - [Mining (community-maintained Hypixel SkyBlock Wiki)](https://hypixelskyblock.minecraft.wiki/w/Mining)
 - [Mining Speed (community-maintained Hypixel SkyBlock Wiki)](https://hypixelskyblock.minecraft.wiki/w/Mining_Speed)
+- [Promising Pickaxe (community-maintained Hypixel SkyBlock Wiki)](https://hypixelskyblock.minecraft.wiki/w/Promising_Pickaxe)
 - [Wooden Pickaxe (community-maintained Hypixel SkyBlock Wiki)](https://hypixelskyblock.minecraft.wiki/w/Wooden_Pickaxe)
 - [Stone Pickaxe (community-maintained Hypixel SkyBlock Wiki)](https://hypixelskyblock.minecraft.wiki/w/Stone_Pickaxe)
 - [Iron Pickaxe (community-maintained Hypixel SkyBlock Wiki)](https://hypixelskyblock.minecraft.wiki/w/Iron_Pickaxe)
