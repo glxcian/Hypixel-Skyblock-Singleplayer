@@ -46,7 +46,7 @@ public final class DamageStat {
 	}
 
 	public static boolean isEstimated(ItemStack stack) {
-		if (stack.is(com.glxcian.shf.item.CustomItems.PROMISING_PICKAXE)) {
+		if (com.glxcian.shf.item.CustomItems.isPromisingPickaxe(stack)) {
 			return false;
 		}
 		String itemId = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
