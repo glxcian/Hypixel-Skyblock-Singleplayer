@@ -29,6 +29,17 @@ public final class PromisingPickaxeProgress {
 		return blocksMined;
 	}
 
+	public static void setBlocksMined(ItemStack stack, long blocksMined) {
+		if (!stack.is(CustomItems.PROMISING_PICKAXE)) {
+			throw new IllegalArgumentException("Only a Promising Pickaxe can store mined block progress.");
+		}
+		if (blocksMined < 0L) {
+			throw new IllegalArgumentException("Promising Pickaxe block count cannot be negative.");
+		}
+		CustomData.update(DataComponents.CUSTOM_DATA, stack,
+			tag -> tag.putLong(BLOCKS_MINED_KEY, blocksMined));
+	}
+
 	public static long recordMinedBlock(ItemStack stack) {
 		if (!stack.is(CustomItems.PROMISING_PICKAXE)) {
 			throw new IllegalArgumentException("Only a Promising Pickaxe can record mined blocks.");
