@@ -127,19 +127,15 @@ public abstract class ItemTooltipMixin {
 		}
 		if (promisingPickaxe) {
 			long blocksMined = PromisingPickaxeProgress.getBlocksMined(stack);
-			int efficiency = MiningSpeedStat.getPromisingEfficiencyLevel(stack);
-			int nextEfficiency = MiningSpeedStat.getNextPromisingEfficiencyThreshold(stack);
-			if (nextEfficiency > 0) {
-				int nextLevel = efficiency + 1;
-				stats.add(Component.literal("Blocks mined: " + blocksMined + "/" + nextEfficiency)
-					.withStyle(ChatFormatting.GRAY));
-				stats.add(Component.literal("Progress: " + blocksMined + "/" + nextEfficiency
-					+ " blocks to Efficiency " + com.glxcian.shf.stat.SkillProgression.roman(nextLevel))
-					.withStyle(ChatFormatting.BLUE));
-			} else {
-				stats.add(Component.literal("Blocks mined: " + blocksMined).withStyle(ChatFormatting.GRAY));
-				stats.add(Component.literal("Maximum Efficiency unlocked").withStyle(ChatFormatting.GRAY));
-			}
+			int storedPotential = PromisingPickaxeProgress.getMiningSpeedBonus(stack);
+			stats.add(Component.literal("Ability: Stored Potential").withStyle(ChatFormatting.GOLD));
+			stats.add(Component.literal("Grants +10 Mining Speed for every 100 blocks mined.")
+				.withStyle(ChatFormatting.GRAY));
+			stats.add(Component.literal("(Max +250 Mining Speed)").withStyle(ChatFormatting.DARK_GRAY));
+			stats.add(Component.literal("Blocks Mined: " + blocksMined).withStyle(ChatFormatting.GRAY));
+			stats.add(statLabel("\\u26cf", ChatFormatting.GREEN, "Mining Speed: ")
+				.append(Component.literal(String.valueOf(storedPotential)).withStyle(ChatFormatting.GREEN)));
+			stats.add(Component.literal("This item can be reforged!").withStyle(ChatFormatting.GRAY));
 			stats.add(Component.literal("UNCOMMON PICKAXE").withStyle(ChatFormatting.GREEN));
 		}
 		if (CollectionRegistry.isCollectionItem(stack)) {
