@@ -133,7 +133,7 @@ public final class CollectionRegistry {
 			return "";
 		}
 		String customId = CustomItems.getCustomItemId(stack);
-		return customId != null ? customId : getItemId(stack.getItem());
+		return customId != null ? customId : BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
 	}
 
 	public static ItemStack createStack(Item item) {
