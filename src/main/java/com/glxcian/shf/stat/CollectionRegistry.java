@@ -12,7 +12,6 @@ import net.minecraft.world.entity.player.Player;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import com.glxcian.shf.item.CustomItems;
-import net.minecraft.world.item.ItemStack;
 
 public final class CollectionRegistry {
 	private static final Map<PlayerProgression.CollectionType, List<String>> COLLECTION_IDS = Map.of(
