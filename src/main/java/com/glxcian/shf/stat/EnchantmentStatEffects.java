@@ -16,6 +16,7 @@ import net.minecraft.world.item.enchantment.ItemEnchantments;
 
 public final class EnchantmentStatEffects {
 	private static final int[] DAMAGE_PERCENT_BY_LEVEL = {0, 5, 10, 15, 20, 30, 40, 50};
+	private static final int[] PROTECTION_DEFENSE_BY_LEVEL = {0, 4, 8, 12, 16, 20, 25, 30};
 
 	private EnchantmentStatEffects() {
 	}
@@ -88,9 +89,11 @@ public final class EnchantmentStatEffects {
 	}
 
 	public static int getProtectionDefenseBonus(ItemStack stack) {
-		int level = Math.min(7, getEnchantmentLevel(stack, "protection"));
-		int[] bonusByLevel = {0, 4, 8, 12, 16, 20, 25, 30};
-		return bonusByLevel[level];
+		return getProtectionDefenseForLevel(getEnchantmentLevel(stack, "protection"));
+	}
+
+	private static int getProtectionDefenseForLevel(int level) {
+		return PROTECTION_DEFENSE_BY_LEVEL[Math.max(0, Math.min(level, PROTECTION_DEFENSE_BY_LEVEL.length - 1))];
 	}
 
 	public static int getFeatherFallingLevel(LivingEntity entity) {
