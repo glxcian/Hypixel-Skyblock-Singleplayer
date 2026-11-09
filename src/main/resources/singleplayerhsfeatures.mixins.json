@@ -6,7 +6,6 @@
         "AttackCooldownMixin",
         "ItemDurabilityMixin",
         "EntityDataAccessMixin",
-        "CustomItemRegistrationMixin",
         "MobLevelMixin",
         "MobProfileSpawnMixin",
         "PlayerHealthMixin",
