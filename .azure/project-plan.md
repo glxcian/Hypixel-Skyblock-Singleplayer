@@ -205,7 +205,7 @@ The above changes are not yet marked complete in the verification section becaus
 - The Promising Pickaxe remains a marked vanilla iron pickaxe. The Personal Compactor is a marked vanilla dropper, has RARE rarity, is non-stackable, and has enchantment glint.
 - Glacite, Tungsten, and Umber collection resources use vanilla base items with custom-data IDs rather than player heads.
 - Enchanted resource outputs use their corresponding vanilla item/block as the base stack, with custom-data IDs and enchantment glint. Compressed enchanted block variants use RARE; other entries default to UNCOMMON unless catalog data specifies otherwise.
-- The rarity resolver covers every registered item, including block items. Unlisted vanilla items default to COMMON; documented vanilla equipment exceptions include Diamond Pickaxe, Diamond Sword, chainmail armor, and diamond armor as UNCOMMON. Custom-data identity overrides the base material's rarity.
+- The rarity resolver covers every registered item, including block items. Unlisted vanilla items default to COMMON; documented vanilla equipment exceptions include diamond tools, diamond swords, chainmail armor, and diamond armor as UNCOMMON. Custom-data identity overrides the base material's rarity.
 - Rarity footers are bold and append the appropriate tool/weapon category (for example, UNCOMMON PICKAXE).
 - Old registered item IDs remain as migration-only compatibility entries. When old stacks enter a player's main inventory, they are converted to the new vanilla-backed stack form so existing worlds can retain previously created items.
 - Testing commands: /compactor, /glacite, /tungsten, /umber, and /promisingpickaxe.
