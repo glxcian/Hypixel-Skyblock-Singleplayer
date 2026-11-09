@@ -42,15 +42,58 @@ public abstract class BlockMiningProgressionMixin {
 
 		List<ItemStack> drops = new ArrayList<>(cir.getReturnValue());
 		boolean farming = SkillExperience.farming(state) > 0.0;
-		if (farming || MiningExperience.isFortuneAffected(state)) {
-			int fortune = (farming ? PlayerProgression.getFarmingFortune(player) : PlayerProgression.getMiningFortune(player))
-				+ EnchantmentStatEffects.getFortuneBonus(player.getMainHandItem(), farming);
+		boolean miningFortuneAffected = !farming && MiningExperience.isFortuneAffected(state);
+		ItemStack heldTool = player.getMainHandItem();
+		boolean smeltingTouch = EnchantmentStatEffects.hasSmeltingTouch(heldTool);
+		if (smeltingTouch) {
+			smeltDrops(drops);
+		}
+		if (farming || miningFortuneAffected) {
+			int fortune = (farming
+				? PlayerProgression.getFarmingFortune(player)
+				: PlayerProgression.getMiningFortune(player))
+				+ EnchantmentStatEffects.getFortuneBonus(heldTool, farming);
 			applyFortune(drops, fortune, level);
+		}
+		if (smeltingTouch || farming || miningFortuneAffected) {
 			cir.setReturnValue(drops);
 		}
 
 		for (ItemStack drop : drops) {
 			PlayerProgression.addCollectionItems(player, drop);
+		}
+	}
+
+	private static void smeltDrops(List<ItemStack> drops) {
+		for (int i = 0; i < drops.size(); i++) {
+			ItemStack drop = drops.get(i);
+			if (drop.isEmpty()) {
+				continue;
+			}
+			String path = net.minecraft.core.registries.BuiltInRegistries.ITEM
+				.getKey(drop.getItem()).getPath();
+			net.minecraft.world.item.Item smeltedItem = switch (path) {
+				case "cobblestone" -> net.minecraft.world.item.Items.STONE;
+				case "stone" -> net.minecraft.world.item.Items.SMOOTH_STONE;
+				case "sand", "red_sand" -> net.minecraft.world.item.Items.GLASS;
+				case "raw_iron", "iron_ore", "deepslate_iron_ore" -> net.minecraft.world.item.Items.IRON_INGOT;
+				case "raw_gold", "gold_ore", "deepslate_gold_ore" -> net.minecraft.world.item.Items.GOLD_INGOT;
+				case "raw_copper", "copper_ore", "deepslate_copper_ore" -> net.minecraft.world.item.Items.COPPER_INGOT;
+				case "ancient_debris" -> net.minecraft.world.item.Items.NETHERITE_SCRAP;
+				case "clay_ball" -> net.minecraft.world.item.Items.BRICK;
+				case "cactus" -> net.minecraft.world.item.Items.GREEN_DYE;
+				case "wet_sponge" -> net.minecraft.world.item.Items.SPONGE;
+				case "kelp" -> net.minecraft.world.item.Items.DRIED_KELP;
+				case "chorus_fruit" -> net.minecraft.world.item.Items.POPPED_CHORUS_FRUIT;
+				case "netherrack" -> net.minecraft.world.item.Items.NETHER_BRICK;
+				default -> path.endsWith("_log") || path.endsWith("_wood")
+					|| path.endsWith("_stem") || path.endsWith("_hyphae")
+					? net.minecraft.world.item.Items.CHARCOAL
+					: null;
+			};
+			if (smeltedItem != null) {
+				drops.set(i, new ItemStack(smeltedItem, drop.getCount()));
+			}
 		}
 	}
 
