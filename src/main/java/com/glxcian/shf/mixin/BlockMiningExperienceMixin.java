@@ -48,8 +48,9 @@ public abstract class BlockMiningExperienceMixin {
 		if (foragingExperience > 0.0) {
 			PlayerProgression.addExperience(player, PlayerProgression.Skill.FORAGING, foragingExperience);
 		}
-		if (tool.is(CustomItems.PROMISING_PICKAXE)) {
-			PromisingPickaxeProgress.recordMinedBlock(tool);
+		ItemStack heldTool = player.getMainHandItem();
+		if (heldTool.is(CustomItems.PROMISING_PICKAXE)) {
+			PromisingPickaxeProgress.recordMinedBlock(heldTool);
 		}
 	}
 }
