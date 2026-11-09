@@ -25,7 +25,6 @@ public final class MiningSpeedConfig {
 		Map.entry("minecraft:golden_pickaxe", 250),
 		Map.entry("minecraft:diamond_pickaxe", 220),
 		Map.entry("minecraft:netherite_pickaxe", 250),
-		Map.entry("singleplayerhsfeatures:promising_pickaxe", 50)
 	);
 	private static final Map<String, Integer> SPEED_BY_ITEM = new ConcurrentHashMap<>(BASE_SPEED_BY_ITEM);
 	private static final String DEFAULT_CONFIG = """
@@ -66,11 +65,17 @@ public final class MiningSpeedConfig {
 	}
 
 	public static int get(ItemStack stack) {
+		if (com.glxcian.shf.item.CustomItems.isPromisingPickaxe(stack)) {
+			return 50;
+		}
 		String itemId = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
 		return SPEED_BY_ITEM.getOrDefault(itemId, getDefault(stack));
 	}
 
 	public static int getDefault(ItemStack stack) {
+		if (com.glxcian.shf.item.CustomItems.isPromisingPickaxe(stack)) {
+			return 50;
+		}
 		String itemId = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
 		return BASE_SPEED_BY_ITEM.getOrDefault(
 			itemId,
