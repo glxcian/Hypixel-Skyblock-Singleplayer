@@ -1,16 +1,16 @@
 package com.glxcian.shf.item;
 
-import java.util.IdentityHashMap;
 import java.util.Map;
 import net.minecraft.ChatFormatting;
-import net.minecraft.core.component.DataComponents;
+import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
 
 /**
- * Hypixel-style rarity metadata. Explicit registrations support all nine
- * SkyBlock tiers; vanilla items fall back to their base RARITY component.
+ * Hypixel SkyBlock rarity tiers for vanilla items and custom-data item stacks.
+ * Every registered vanilla item (including block items) receives COMMON by
+ * default; sourced material-specific exceptions and custom item data override it.
  */
 public enum SkyBlockRarity {
 	COMMON("COMMON", ChatFormatting.GRAY),
@@ -21,9 +21,18 @@ public enum SkyBlockRarity {
 	MYTHIC("MYTHIC", ChatFormatting.LIGHT_PURPLE),
 	DIVINE("DIVINE", ChatFormatting.AQUA),
 	SPECIAL("SPECIAL", ChatFormatting.RED),
-	VERY_SPECIAL("VERY SPECIAL", ChatFormatting.DARK_RED);
+	VERY_SPECIAL("VERY SPECIAL", ChatFormatting.DARK_RED),
+	ULTIMATE("ULTIMATE", ChatFormatting.DARK_PURPLE),
+	ADMIN("ADMIN", ChatFormatting.DARK_RED);
 
-	private static final Map<Item, SkyBlockRarity> ITEMS = new IdentityHashMap<>();
+	/*
+	 * Hypixel's generic Diamond Pickaxe is UNCOMMON. Other vanilla items and
+	 * block items default to COMMON until an item-specific SkyBlock mapping
+	 * is available; enchanted/custom variants are resolved by their custom ID.
+	 */
+	private static final Map<String, SkyBlockRarity> VANILLA_RARITIES = Map.of(
+		"minecraft:diamond_pickaxe", UNCOMMON
+	);
 
 	private final String displayName;
 	private final ChatFormatting color;
@@ -41,25 +50,59 @@ public enum SkyBlockRarity {
 		return color;
 	}
 
-	public static void register(Item item, SkyBlockRarity rarity) {
-		ITEMS.put(item, rarity);
+	/** Resolves custom-data identity first, then the vanilla item's SkyBlock mapping. */
+	public static SkyBlockRarity get(ItemStack stack) {
+		String customId = CustomItems.getCustomItemId(stack);
+		if (customId != null) {
+			if (customId.equals("singleplayerhsfeatures:promising_pickaxe")) {
+				return UNCOMMON;
+			}
+			if (customId.equals("singleplayerhsfeatures:personal_compactor")) {
+				return RARE;
+			}
+			if (customId.startsWith("singleplayerhsfeatures:")) {
+				EnchantedResourceCatalog.Resource resource =
+					EnchantedResourceCatalog.getByPath(customId.substring("singleplayerhsfeatures:".length()));
+				if (resource != null) {
+					return resource.rarity();
+				}
+				return COMMON;
+			}
+		}
+		return get(stack.getItem());
 	}
 
-	/** Returns explicit SkyBlock rarity, or derives one from a vanilla item's base rarity. */
-	public static SkyBlockRarity get(ItemStack stack) {
-		if (CustomItems.isPromisingPickaxe(stack)) {
-			return UNCOMMON;
-		}
-		SkyBlockRarity registered = ITEMS.get(stack.getItem());
-		if (registered != null) {
-			return registered;
-		}
-		Rarity vanilla = stack.getOrDefault(DataComponents.RARITY, Rarity.COMMON);
-		return switch (vanilla) {
-			case COMMON -> COMMON;
-			case UNCOMMON -> UNCOMMON;
-			case RARE -> RARE;
-			case EPIC -> EPIC;
+	/** Every vanilla item and block item is covered by this method. */
+	public static SkyBlockRarity get(Item item) {
+		String itemId = BuiltInRegistries.ITEM.getKey(item).toString();
+		return VANILLA_RARITIES.getOrDefault(itemId, COMMON);
+	}
+
+	/** Minecraft only has four native rarity values; SkyBlock color is rendered separately. */
+	public Rarity vanillaRarity() {
+		return switch (this) {
+			case COMMON -> Rarity.COMMON;
+			case UNCOMMON -> Rarity.UNCOMMON;
+			case RARE -> Rarity.RARE;
+			case EPIC, LEGENDARY, MYTHIC, DIVINE, SPECIAL, VERY_SPECIAL, ULTIMATE, ADMIN -> Rarity.EPIC;
+		};
+	}
+
+	/** Hypixel places the item category after rarity for tools and weapons. */
+	public static String getItemSuffix(ItemStack stack) {
+		String path = BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath();
+		if (path.endsWith("_pickaxe")) return " PICKAXE";
+		if (path.endsWith("_shovel")) return " SHOVEL";
+		if (path.endsWith("_axe")) return " AXE";
+		if (path.endsWith("_hoe")) return " HOE";
+		if (path.endsWith("_sword")) return " SWORD";
+		return switch (path) {
+			case "bow" -> " BOW";
+			case "crossbow" -> " CROSSBOW";
+			case "trident" -> " TRIDENT";
+			case "mace" -> " MACE";
+			case "fishing_rod" -> " FISHING ROD";
+			default -> "";
 		};
 	}
 }
