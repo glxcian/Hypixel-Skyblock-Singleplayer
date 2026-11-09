@@ -53,7 +53,7 @@ public final class CustomItems {
 			return false;
 		}
 		CustomData data = stack.get(DataComponents.CUSTOM_DATA);
-		return data != null && data.copyTag().getBoolean(PROMISING_PICKAXE_MARKER);
+		return data != null && data.copyTag().getBoolean(PROMISING_PICKAXE_MARKER).orElse(false);
 	}
 
 	public static void initialize() {
