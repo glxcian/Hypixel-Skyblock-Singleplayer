@@ -198,3 +198,14 @@ The following source changes have been made after inspecting the supplied 26.3 w
 - **Promising Pickaxe model investigation:** its item-definition file already references `minecraft:item/iron_pickaxe`, matching vanilla's own iron-pickaxe item definition, and the matching legacy model file also references the vanilla iron-pickaxe texture. No incorrect model path was found in this source archive. The remaining visual issue needs an in-game screenshot or a resource/model loading error to distinguish a stale resource reload from an external override or runtime model-resolution issue.
 
 The above changes are not yet marked complete in the verification section because the Gradle wrapper distribution was not available in the current build environment. Remaining enchantments with materially custom SkyBlock behavior (including Looting and Fire Aspect) need their own gameplay implementation rather than being treated as equivalent to vanilla effects.
+
+## SkyBlock item stack model
+
+- Newly created SkyBlock items use vanilla Minecraft item stacks with custom-data identity markers, custom names, rarity components, and optional enchantment-glint overrides. New items are not registered as custom item types.
+- The Promising Pickaxe remains a marked vanilla iron pickaxe. The Personal Compactor is a marked vanilla dropper, has RARE rarity, is non-stackable, and has enchantment glint.
+- Glacite, Tungsten, and Umber collection resources use vanilla base items with custom-data IDs rather than player heads.
+- Enchanted resource outputs use their corresponding vanilla item/block as the base stack, with custom-data IDs and enchantment glint. Compressed enchanted block variants use RARE; other entries default to UNCOMMON unless catalog data specifies otherwise.
+- The rarity resolver covers every registered item, including block items. Unlisted vanilla items default to COMMON; documented vanilla equipment exceptions include Diamond Pickaxe, Diamond Sword, chainmail armor, and diamond armor as UNCOMMON. Custom-data identity overrides the base material's rarity.
+- Rarity footers are bold and append the appropriate tool/weapon category (for example, UNCOMMON PICKAXE).
+- Old registered item IDs remain as migration-only compatibility entries. When old stacks enter a player's main inventory, they are converted to the new vanilla-backed stack form so existing worlds can retain previously created items.
+- Testing commands: /compactor, /glacite, /tungsten, /umber, and /promisingpickaxe.
