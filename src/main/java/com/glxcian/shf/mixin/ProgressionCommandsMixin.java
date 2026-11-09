@@ -88,7 +88,18 @@ public abstract class ProgressionCommandsMixin {
 			.executes(command -> {
 				giveItem(command.getSource().getPlayerOrException(), CustomItems.PROMISING_PICKAXE, "Promising Pickaxe");
 				return 1;
-			}));
+			})
+			.then(Commands.literal("maxed")
+				.executes(command -> {
+					ServerPlayer player = command.getSource().getPlayerOrException();
+					ItemStack stack = new ItemStack(CustomItems.PROMISING_PICKAXE);
+					com.glxcian.shf.stat.PromisingPickaxeProgress.setBlocksMined(stack, 2500L);
+					if (!player.getInventory().add(stack) && !stack.isEmpty()) {
+						player.drop(stack, false, net.minecraft.util.Prediction.SERVER_ONLY);
+					}
+					player.sendSystemMessage(Component.literal("Given a maxed Promising Pickaxe (2,500 blocks mined)."));
+					return 1;
+				})));
 	}
 
 	private static void giveItem(ServerPlayer player, Item item, String itemName) {
