@@ -20,6 +20,7 @@ public final class CollectionRegistry {
 			"minecraft:quartz", "minecraft:amethyst_shard", "minecraft:obsidian", "minecraft:glowstone_dust",
 			"minecraft:gravel", "minecraft:flint", "minecraft:ice", "minecraft:packed_ice",
 			"minecraft:blue_ice", "minecraft:netherrack", "minecraft:ancient_debris",
+			"singleplayerhsfeatures:glacite", "singleplayerhsfeatures:tungsten", "singleplayerhsfeatures:umber",
 			"minecraft:netherite_scrap", "minecraft:clay_ball"
 		),
 		PlayerProgression.CollectionType.FORAGING, List.of(
