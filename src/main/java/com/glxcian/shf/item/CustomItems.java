@@ -43,6 +43,9 @@ public final class CustomItems {
 
 	/** Compatibility alias. Promising Pickaxes are marked vanilla iron pickaxe stacks. */
 	public static final Item PROMISING_PICKAXE = Items.IRON_PICKAXE;
+	static {
+		SkyBlockRarity.register(COMPACTOR, SkyBlockRarity.UNCOMMON);
+	}
 	private static final Map<String, Item> ENCHANTED_RESOURCES = new LinkedHashMap<>();
 
 	private CustomItems() {
