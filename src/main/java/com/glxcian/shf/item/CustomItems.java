@@ -87,6 +87,7 @@ public final class CustomItems {
 				new Item(properties)
 			);
 			ENCHANTED_RESOURCES.put(resource.path(), item);
+			SkyBlockRarity.register(item, SkyBlockRarity.UNCOMMON);
 		}
 	}
 
@@ -103,11 +104,12 @@ public final class CustomItems {
 				Blocks.PLAYER_WALL_HEAD,
 				new Item.Properties()
 					.setId(key)
-					.rarity(Rarity.UNCOMMON)
+					.rarity(Rarity.COMMON)
 					.component(DataComponents.ITEM_NAME, Component.literal(name))
 					.component(DataComponents.PROFILE, ResolvableProfile.createUnresolved(placeholderProfile))
 			)
 		);
+		SkyBlockRarity.register(item, SkyBlockRarity.COMMON);
 		switch (path) {
 			case "glacite" -> GLACITE = item;
 			case "tungsten" -> TUNGSTEN = item;
