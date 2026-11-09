@@ -30,8 +30,20 @@ public enum SkyBlockRarity {
 	 * block items default to COMMON until an item-specific SkyBlock mapping
 	 * is available; enchanted/custom variants are resolved by their custom ID.
 	 */
-	private static final Map<String, SkyBlockRarity> VANILLA_RARITIES = Map.of(
-		"minecraft:diamond_pickaxe", UNCOMMON
+	private static final Map<String, SkyBlockRarity> VANILLA_RARITIES = Map.ofEntries(
+		Map.entry("minecraft:diamond_pickaxe", UNCOMMON),
+		Map.entry("minecraft:diamond_sword", UNCOMMON),
+		Map.entry("minecraft:diamond_axe", UNCOMMON),
+		Map.entry("minecraft:diamond_shovel", UNCOMMON),
+		Map.entry("minecraft:diamond_hoe", UNCOMMON),
+		Map.entry("minecraft:chainmail_helmet", UNCOMMON),
+		Map.entry("minecraft:chainmail_chestplate", UNCOMMON),
+		Map.entry("minecraft:chainmail_leggings", UNCOMMON),
+		Map.entry("minecraft:chainmail_boots", UNCOMMON),
+		Map.entry("minecraft:diamond_helmet", UNCOMMON),
+		Map.entry("minecraft:diamond_chestplate", UNCOMMON),
+		Map.entry("minecraft:diamond_leggings", UNCOMMON),
+		Map.entry("minecraft:diamond_boots", UNCOMMON)
 	);
 
 	private final String displayName;
