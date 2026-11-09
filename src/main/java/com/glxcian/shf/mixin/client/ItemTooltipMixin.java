@@ -26,7 +26,7 @@ public abstract class ItemTooltipMixin {
 	@Inject(method = "getHoverName()Lnet/minecraft/network/chat/Component;", at = @At("RETURN"), cancellable = true)
 	private void singleplayerhsfeatures$promisingPickaxeHoverName(CallbackInfoReturnable<Component> cir) {
 		ItemStack stack = (ItemStack) (Object) this;
-		if (stack.is(com.glxcian.shf.item.CustomItems.PROMISING_PICKAXE)) {
+		if (com.glxcian.shf.item.CustomItems.isPromisingPickaxe(stack)) {
 			cir.setReturnValue(Component.literal("Promising Pickaxe").withStyle(ChatFormatting.GREEN));
 		}
 	}
