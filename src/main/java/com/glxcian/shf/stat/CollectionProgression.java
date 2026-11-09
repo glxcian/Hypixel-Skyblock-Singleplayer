@@ -42,6 +42,18 @@ public final class CollectionProgression {
 			new Milestone(25_000, "Zombie Armor Recipe"),
 			new Milestone(50_000, "Large Combat Sack Recipe"),
 			new Milestone(100_000, "Large Enchanted Combat Sack Recipe")
+		),
+		"minecraft:obsidian", List.of(
+			new Milestone(50, "Obsidian Minion Recipe"),
+			new Milestone(100, "Lethality Experience Discount (-25%)"),
+			new Milestone(250, "Gravity Talisman Recipe"),
+			new Milestone(1_000, "Enchanted Obsidian Recipe"),
+			new Milestone(2_500, "+1 Mining Fortune"),
+			new Milestone(5_000, "Stun Potion Recipe"),
+			new Milestone(10_000, "+1 Mining Fortune"),
+			new Milestone(25_000, "+1 Mining Fortune"),
+			new Milestone(50_000, "Obsidian Tablet Recipe"),
+			new Milestone(100_000, "+1 Mining Fortune; +50,000 Mining Experience")
 		)
 	);
 
@@ -62,6 +74,19 @@ public final class CollectionProgression {
 			level++;
 		}
 		return level;
+	}
+
+	public static int getMiningFortune(String itemId, long count) {
+		int fortune = 0;
+		for (Milestone milestone : milestones(itemId)) {
+			if (count < milestone.required()) {
+				break;
+			}
+			if (milestone.reward().contains("Mining Fortune")) {
+				fortune++;
+			}
+		}
+		return fortune;
 	}
 
 	public static int getNextRequirement(String itemId, long count) {
