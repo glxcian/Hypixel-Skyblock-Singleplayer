@@ -28,6 +28,12 @@ public abstract class ItemTooltipMixin {
 		ItemStack stack = (ItemStack) (Object) this;
 		if (com.glxcian.shf.item.CustomItems.isPromisingPickaxe(stack)) {
 			cir.setReturnValue(Component.literal("Promising Pickaxe").withStyle(ChatFormatting.GREEN));
+			return;
+		}
+		com.glxcian.shf.item.SkyBlockRarity rarity =
+			com.glxcian.shf.item.SkyBlockRarity.get(stack.getItem());
+		if (rarity != null) {
+			cir.setReturnValue(cir.getReturnValue().copy().withStyle(rarity.color()));
 		}
 	}
 
@@ -60,11 +66,6 @@ public abstract class ItemTooltipMixin {
 			} else {
 				lines.set(0, name);
 			}
-		} else if (!lines.isEmpty()
-			&& com.glxcian.shf.item.EnchantedResourceCatalog.getByPath(
-				net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath()
-			) instanceof com.glxcian.shf.item.EnchantedResourceCatalog.Resource resource) {
-			lines.set(0, Component.literal(resource.name()).withStyle(ChatFormatting.YELLOW));
 		}
 		int statsInsertionIndex = Math.min(1, lines.size());
 		int breakingPower = MiningSpeedStat.getBreakingPower(stack);
@@ -166,6 +167,14 @@ public abstract class ItemTooltipMixin {
 			}
 		}
 		lines.addAll(statsInsertionIndex, stats);
+		com.glxcian.shf.item.SkyBlockRarity rarity =
+			com.glxcian.shf.item.SkyBlockRarity.get(stack.getItem());
+		if (rarity != null) {
+			lines.add(Component.literal(rarity.displayName() + " "
+				+ net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath()
+					.replace('_', ' ').toUpperCase(java.util.Locale.ROOT))
+				.withStyle(rarity.color()));
+		}
 		cir.setReturnValue(lines);
 	}
 
