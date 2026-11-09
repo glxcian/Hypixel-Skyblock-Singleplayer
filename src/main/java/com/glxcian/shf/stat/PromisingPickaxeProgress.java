@@ -15,7 +15,7 @@ public final class PromisingPickaxeProgress {
 	}
 
 	public static long getBlocksMined(ItemStack stack) {
-		if (!stack.is(CustomItems.PROMISING_PICKAXE)) {
+		if (!CustomItems.isPromisingPickaxe(stack)) {
 			return 0L;
 		}
 		CustomData data = stack.get(DataComponents.CUSTOM_DATA);
@@ -30,7 +30,7 @@ public final class PromisingPickaxeProgress {
 	}
 
 	public static void setBlocksMined(ItemStack stack, long blocksMined) {
-		if (!stack.is(CustomItems.PROMISING_PICKAXE)) {
+		if (!CustomItems.isPromisingPickaxe(stack)) {
 			throw new IllegalArgumentException("Only a Promising Pickaxe can store mined block progress.");
 		}
 		if (blocksMined < 0L) {
@@ -41,7 +41,7 @@ public final class PromisingPickaxeProgress {
 	}
 
 	public static long recordMinedBlock(ItemStack stack) {
-		if (!stack.is(CustomItems.PROMISING_PICKAXE)) {
+		if (!CustomItems.isPromisingPickaxe(stack)) {
 			throw new IllegalArgumentException("Only a Promising Pickaxe can record mined blocks.");
 		}
 		long blocksMined = Math.addExact(getBlocksMined(stack), 1L);
