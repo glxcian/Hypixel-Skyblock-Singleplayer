@@ -13,6 +13,7 @@ public final class CompactorAutomation {
 	}
 
 	public static void tick(ServerPlayer player) {
+		CustomItems.migrateLegacyItems(player);
 		Inventory inventory = player.getInventory();
 		if (!hasCompactor(inventory)) {
 			return;
