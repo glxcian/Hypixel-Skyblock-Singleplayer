@@ -23,6 +23,14 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(ItemStack.class)
 public abstract class ItemTooltipMixin {
+	@Inject(method = "getHoverName()Lnet/minecraft/network/chat/Component;", at = @At("RETURN"), cancellable = true)
+	private void singleplayerhsfeatures$promisingPickaxeHoverName(CallbackInfoReturnable<Component> cir) {
+		ItemStack stack = (ItemStack) (Object) this;
+		if (stack.is(com.glxcian.shf.item.CustomItems.PROMISING_PICKAXE)) {
+			cir.setReturnValue(Component.literal("Promising Pickaxe").withStyle(ChatFormatting.GREEN));
+		}
+	}
+
 	@Inject(
 		method = "getTooltipLines(Lnet/minecraft/world/item/Item$TooltipContext;Lnet/minecraft/world/entity/player/Player;Lnet/minecraft/world/item/TooltipFlag;)Ljava/util/List;",
 		at = @At("RETURN"),
@@ -60,6 +68,9 @@ public abstract class ItemTooltipMixin {
 			lines.add(statsInsertionIndex, Component.literal("Breaking Power: " + breakingPower)
 				.withStyle(ChatFormatting.GRAY));
 			statsInsertionIndex++;
+			if (promisingPickaxe) {
+				lines.add(statsInsertionIndex++, Component.empty());
+			}
 		}
 
 		DamageStat.getItemDamage(stack).ifPresent(damage -> {
@@ -112,7 +123,9 @@ public abstract class ItemTooltipMixin {
 			}
 			stats.add(defenseLine);
 		});
-		int miningSpeed = player == null ? MiningSpeedStat.getItem(stack) : MiningSpeedStat.getItem(stack, player);
+		int miningSpeed = promisingPickaxe
+			? MiningSpeedConfig.get(stack)
+			: player == null ? MiningSpeedStat.getItem(stack) : MiningSpeedStat.getItem(stack, player);
 		if (miningSpeed > 0 && !efficiencySpeedShown) {
 			MutableComponent miningSpeedLine = statLabel("\u26cf", ChatFormatting.GOLD, "Mining Speed: ")
 				.append(Component.literal("+" + miningSpeed).withStyle(ChatFormatting.GOLD));
@@ -128,13 +141,16 @@ public abstract class ItemTooltipMixin {
 		if (promisingPickaxe) {
 			long blocksMined = PromisingPickaxeProgress.getBlocksMined(stack);
 			int storedPotential = PromisingPickaxeProgress.getMiningSpeedBonus(stack);
+			stats.add(Component.empty());
 			stats.add(Component.literal("Ability: Stored Potential").withStyle(ChatFormatting.GOLD));
 			stats.add(Component.literal("Grants +10 Mining Speed for every 100 blocks mined.")
 				.withStyle(ChatFormatting.GRAY));
 			stats.add(Component.literal("(Max +250 Mining Speed)").withStyle(ChatFormatting.DARK_GRAY));
+			stats.add(Component.empty());
 			stats.add(Component.literal("Blocks Mined: " + blocksMined).withStyle(ChatFormatting.GRAY));
 			stats.add(statLabel("\u26cf", ChatFormatting.GREEN, "Mining Speed: ")
 				.append(Component.literal(String.valueOf(storedPotential)).withStyle(ChatFormatting.GREEN)));
+			stats.add(Component.empty());
 			stats.add(Component.literal("This item can be reforged!").withStyle(ChatFormatting.GRAY));
 			stats.add(Component.literal("UNCOMMON PICKAXE").withStyle(ChatFormatting.GREEN));
 		}
