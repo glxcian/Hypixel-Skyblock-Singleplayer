@@ -171,8 +171,7 @@ public abstract class ItemTooltipMixin {
 			com.glxcian.shf.item.SkyBlockRarity.get(stack.getItem());
 		if (rarity != null) {
 			lines.add(Component.literal(rarity.displayName() + " "
-				+ net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem()).getPath()
-					.replace('_', ' ').toUpperCase(java.util.Locale.ROOT))
+				+ stack.getHoverName().getString().toUpperCase(java.util.Locale.ROOT))
 				.withStyle(rarity.color()));
 		}
 		cir.setReturnValue(lines);
