@@ -25,7 +25,7 @@ public final class CompactorAutomation {
 
 	private static boolean hasCompactor(Inventory inventory) {
 		for (int slot = 0; slot < MAIN_INVENTORY_SIZE; slot++) {
-			if (inventory.getItem(slot).is(CustomItems.COMPACTOR)) {
+			if (CustomItems.isPersonalCompactor(inventory.getItem(slot))) {
 				return true;
 			}
 		}
@@ -39,7 +39,7 @@ public final class CompactorAutomation {
 			return;
 		}
 
-		ItemStack output = new ItemStack(CustomItems.getEnchantedResource(resource.path()));
+		ItemStack output = CustomItems.createEnchantedResource(resource.path());
 		int inputToConsume = craftCount * resource.amount();
 		int freedInputSlots = countFreedInputSlots(inventory, resource.inputId(), inputToConsume);
 		if (availableOutputCapacity(inventory, output, freedInputSlots) < craftCount) {
@@ -125,7 +125,9 @@ public final class CompactorAutomation {
 		for (int slot = 0; slot < MAIN_INVENTORY_SIZE && remaining > 0; slot++) {
 			if (inventory.getItem(slot).isEmpty()) {
 				int moved = Math.min(remaining, output.getMaxStackSize());
-				inventory.setItem(slot, new ItemStack(output.getItem(), moved));
+				ItemStack inserted = output.copy();
+				inserted.setCount(moved);
+				inventory.setItem(slot, inserted);
 				remaining -= moved;
 			}
 		}
@@ -135,6 +137,8 @@ public final class CompactorAutomation {
 	}
 
 	private static boolean matches(ItemStack stack, String itemId) {
-		return !stack.isEmpty() && BuiltInRegistries.ITEM.getKey(stack.getItem()).toString().equals(itemId);
+		return !stack.isEmpty()
+			&& CustomItems.getCustomItemId(stack) == null
+			&& BuiltInRegistries.ITEM.getKey(stack.getItem()).toString().equals(itemId);
 	}
 }
