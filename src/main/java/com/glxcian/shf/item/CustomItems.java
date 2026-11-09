@@ -50,7 +50,7 @@ public final class CustomItems {
 	 * New items are always created as vanilla stacks with custom data.
 	 */
 	public static void initializeLegacyItems() {
-		registerLegacyItem("compactor", "Compactor", Rarity.UNCOMMON, 1);
+		registerLegacyItem("compactor", "Personal Compactor", Rarity.RARE, 1);
 		for (Map.Entry<String, MiningResource> entry : MINING_RESOURCES.entrySet()) {
 			registerLegacyItem(entry.getKey(), entry.getValue().displayName(), Rarity.COMMON, 64);
 		}
