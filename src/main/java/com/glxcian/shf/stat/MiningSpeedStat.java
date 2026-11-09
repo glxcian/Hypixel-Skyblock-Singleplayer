@@ -38,7 +38,7 @@ public final class MiningSpeedStat {
 		if (!path.endsWith("_pickaxe")) {
 			return 0;
 		}
-		if (stack.is(com.glxcian.shf.item.CustomItems.PROMISING_PICKAXE)) {
+		if (com.glxcian.shf.item.CustomItems.isPromisingPickaxe(stack)) {
 			return 3;
 		}
 		return switch (path) {
