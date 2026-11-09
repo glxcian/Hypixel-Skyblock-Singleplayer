@@ -1,6 +1,6 @@
 {
   "model": {
     "type": "minecraft:model",
-    "model": "singleplayerhsfeatures:item/compactor"
+    "model": "minecraft:item/dropper"
   }
 }
