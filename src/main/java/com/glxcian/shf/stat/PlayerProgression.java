@@ -129,7 +129,7 @@ public final class PlayerProgression {
 			}
 		}
 		for (Item item : CollectionRegistry.getItems()) {
-			String itemId = BuiltInRegistries.ITEM.getKey(item).toString();
+			String itemId = CollectionRegistry.getItemId(item);
 			experience = Math.addExact(experience,
 				CollectionProgression.getSkyBlockExperience(itemId, getCollectionCount(collections, itemId)));
 		}
@@ -251,7 +251,7 @@ public final class PlayerProgression {
 		if (stack.isEmpty()) {
 			return;
 		}
-		String itemId = BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
+		String itemId = CollectionRegistry.getItemId(stack);
 		CollectionType registeredType = CollectionRegistry.getType(itemId);
 		if (registeredType == null || type != null && registeredType != type) {
 			return;
