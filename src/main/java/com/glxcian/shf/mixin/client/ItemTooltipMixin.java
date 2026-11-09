@@ -50,6 +50,7 @@ public abstract class ItemTooltipMixin {
 	) {
 		ItemStack stack = (ItemStack) (Object) this;
 		List<Component> lines = new ArrayList<>(cir.getReturnValue());
+		singleplayerhsfeatures$removeVanillaAttributeSections(lines);
 		List<Component> stats = new ArrayList<>();
 		List<EnchantmentStatEffects.TooltipEnchantment> enchantments =
 			EnchantmentStatEffects.getTooltipEnchantments(stack);
@@ -170,6 +171,27 @@ public abstract class ItemTooltipMixin {
 			com.glxcian.shf.item.SkyBlockRarity.get(stack);
 		lines.add(Component.literal(rarity.displayName()).withStyle(rarity.color()));
 		cir.setReturnValue(lines);
+	}
+
+	/**
+	 * Removes vanilla equipment attribute sections (for example, "When in Main Hand")
+	 * from every item tooltip. SkyBlock item stats are displayed by this mod instead.
+	 */
+	private static void singleplayerhsfeatures$removeVanillaAttributeSections(List<Component> lines) {
+		for (int i = 1; i < lines.size();) {
+			String text = lines.get(i).getString().trim();
+			if (text.startsWith("When ") && text.endsWith(":")) {
+				lines.remove(i);
+				while (i < lines.size() && !lines.get(i).getString().isBlank()) {
+					lines.remove(i);
+				}
+				if (i < lines.size()) {
+					lines.remove(i);
+				}
+			} else {
+				i++;
+			}
+		}
 	}
 
 	private static MutableComponent statLabel(String icon, ChatFormatting iconColor, String label) {
