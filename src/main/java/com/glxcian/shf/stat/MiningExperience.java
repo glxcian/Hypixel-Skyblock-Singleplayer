@@ -46,6 +46,11 @@ public final class MiningExperience {
 
 	public static boolean isFortuneAffected(BlockState state) {
 		String path = BuiltInRegistries.BLOCK.getKey(state.getBlock()).getPath();
-		return path.endsWith("_ore") || path.equals("glowstone") || path.equals("gravel");
+		return path.endsWith("_ore") || switch (path) {
+			case "stone", "cobblestone", "end_stone", "glowstone", "gravel",
+				"ice", "packed_ice", "blue_ice", "netherrack", "obsidian",
+				"red_sand", "sand", "mycelium" -> true;
+			default -> false;
+		};
 	}
 }
