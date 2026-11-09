@@ -24,7 +24,7 @@ public final class CustomItems {
 	public static final Item COMPACTOR = Items.DROPPER;
 
 	/** Unique vanilla base items for the mining collection resources. */
-	public static final Item GLACITE = Items.AMETHYST_SHARD;
+	public static final Item GLACITE = Items.SNOW_BLOCK;
 	public static final Item TUNGSTEN = Items.IRON_NUGGET;
 	public static final Item UMBER = Items.TUFF;
 
