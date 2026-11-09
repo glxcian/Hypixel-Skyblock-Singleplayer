@@ -92,9 +92,17 @@ public final class PlayerProgression {
 
 	public static int getMiningFortune(Player player) {
 		int skillFortune = getLevel(player, Skill.MINING) * 4;
-		int collectionFortune = CollectionProgression.getMiningFortune(
-			"minecraft:obsidian", getCollectionCount(player, "minecraft:obsidian")
-		);
+		int collectionFortune = 0;
+		for (String itemId : new String[] {
+			"minecraft:obsidian",
+			"singleplayerhsfeatures:glacite",
+			"singleplayerhsfeatures:tungsten",
+			"singleplayerhsfeatures:umber"
+		}) {
+			collectionFortune += CollectionProgression.getMiningFortune(
+				itemId, getCollectionCount(player, itemId, CollectionType.MINING)
+			);
+		}
 		return skillFortune + collectionFortune;
 	}
 
