@@ -7,17 +7,19 @@
     " S "
   ],
   "key": {
-    "I": { "item": "minecraft:iron_block" },
-    "S": { "item": "minecraft:stick" }
+    "I": "minecraft:iron_block",
+    "S": "minecraft:stick"
   },
   "result": {
     "id": "minecraft:iron_pickaxe",
     "count": 1,
     "components": {
       "minecraft:custom_data": {
-        "singleplayerhsfeatures:promising_pickaxe": true
+        "singleplayerhsfeatures:promising_pickaxe": true,
+        "singleplayerhsfeatures:item_id": "singleplayerhsfeatures:promising_pickaxe"
       },
-      "minecraft:item_name": "Promising Pickaxe"
+      "minecraft:item_name": "Promising Pickaxe",
+      "minecraft:rarity": "uncommon"
     }
   }
 }
