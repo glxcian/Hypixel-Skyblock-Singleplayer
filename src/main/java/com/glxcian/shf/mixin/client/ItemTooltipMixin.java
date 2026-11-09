@@ -160,7 +160,7 @@ public abstract class ItemTooltipMixin {
 			stats.add(Component.literal("Collection Item").withStyle(ChatFormatting.DARK_GRAY));
 		}
 		if (player != null && CollectionRegistry.isCollectionItem(stack)) {
-			String itemId = net.minecraft.core.registries.BuiltInRegistries.ITEM.getKey(stack.getItem()).toString();
+			String itemId = CollectionRegistry.getItemId(stack);
 			long collectionCount = PlayerProgression.getCollectionCount(player, itemId);
 			if (collectionCount > 0) {
 				stats.add(Component.literal("Collection: " + collectionCount).withStyle(ChatFormatting.DARK_GREEN));
@@ -169,7 +169,9 @@ public abstract class ItemTooltipMixin {
 		lines.addAll(statsInsertionIndex, stats);
 		com.glxcian.shf.item.SkyBlockRarity rarity =
 			com.glxcian.shf.item.SkyBlockRarity.get(stack);
-		lines.add(Component.literal(rarity.displayName()).withStyle(rarity.color()));
+		lines.add(Component.literal(rarity.displayName()
+			+ com.glxcian.shf.item.SkyBlockRarity.getItemSuffix(stack))
+			.withStyle(rarity.color()).withStyle(ChatFormatting.BOLD));
 		cir.setReturnValue(lines);
 	}
 
