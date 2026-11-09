@@ -25,7 +25,7 @@ public final class MiningSpeedConfig {
 		Map.entry("minecraft:golden_pickaxe", 250),
 		Map.entry("minecraft:diamond_pickaxe", 220),
 		Map.entry("minecraft:netherite_pickaxe", 250),
-		Map.entry("singleplayerhsfeatures:promising_pickaxe", 190)
+		Map.entry("singleplayerhsfeatures:promising_pickaxe", 50)
 	);
 	private static final Map<String, Integer> SPEED_BY_ITEM = new ConcurrentHashMap<>(BASE_SPEED_BY_ITEM);
 	private static final String DEFAULT_CONFIG = """
