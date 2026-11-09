@@ -1,6 +1,5 @@
 package com.glxcian.shf.item;
 
-import com.glxcian.shf.SingleplayerHSFeatures;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import net.minecraft.core.Registry;
@@ -11,13 +10,16 @@ import net.minecraft.resources.Identifier;
 import net.minecraft.resources.ResourceKey;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Items;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
-import net.minecraft.world.item.ToolMaterial;
+import net.minecraft.world.item.component.CustomData;
 
 public final class CustomItems {
+	private static final String PROMISING_PICKAXE_MARKER = "singleplayerhsfeatures:promising_pickaxe";
 	public static final ResourceKey<Item> COMPACTOR_KEY = ResourceKey.create(
 		Registries.ITEM,
-		Identifier.fromNamespaceAndPath(SingleplayerHSFeatures.MOD_ID, "compactor")
+		Identifier.fromNamespaceAndPath("singleplayerhsfeatures", "compactor")
 	);
 	public static final Item COMPACTOR = Registry.register(
 		BuiltInRegistries.ITEM,
@@ -30,31 +32,35 @@ public final class CustomItems {
 				.component(DataComponents.ITEM_NAME, Component.literal("Compactor"))
 		)
 	);
-	public static final ResourceKey<Item> PROMISING_PICKAXE_KEY = ResourceKey.create(
-		Registries.ITEM,
-		Identifier.fromNamespaceAndPath(SingleplayerHSFeatures.MOD_ID, "promising_pickaxe")
-	);
-	public static final Item PROMISING_PICKAXE = Registry.register(
-		BuiltInRegistries.ITEM,
-		PROMISING_PICKAXE_KEY,
-		new Item(
-			new Item.Properties()
-				.setId(PROMISING_PICKAXE_KEY)
-				.pickaxe(ToolMaterial.IRON, 1.0F, -2.8F)
-				.rarity(Rarity.UNCOMMON)
-				.component(DataComponents.ITEM_NAME, Component.literal("Promising Pickaxe"))
-		)
-	);
+
+	/** Compatibility alias. Promising Pickaxes are marked vanilla iron pickaxe stacks. */
+	public static final Item PROMISING_PICKAXE = Items.IRON_PICKAXE;
 	private static final Map<String, Item> ENCHANTED_RESOURCES = new LinkedHashMap<>();
 
 	private CustomItems() {
+	}
+
+	public static ItemStack createPromisingPickaxe() {
+		ItemStack stack = new ItemStack(Items.IRON_PICKAXE);
+		CustomData.update(DataComponents.CUSTOM_DATA, stack,
+			tag -> tag.putBoolean(PROMISING_PICKAXE_MARKER, true));
+		stack.set(DataComponents.ITEM_NAME, Component.literal("Promising Pickaxe"));
+		return stack;
+	}
+
+	public static boolean isPromisingPickaxe(ItemStack stack) {
+		if (!stack.is(Items.IRON_PICKAXE)) {
+			return false;
+		}
+		CustomData data = stack.get(DataComponents.CUSTOM_DATA);
+		return data != null && data.copyTag().getBooleanOr(PROMISING_PICKAXE_MARKER, false);
 	}
 
 	public static void initialize() {
 		for (EnchantedResourceCatalog.Resource resource : EnchantedResourceCatalog.RESOURCES) {
 			ResourceKey<Item> key = ResourceKey.create(
 				Registries.ITEM,
-				Identifier.fromNamespaceAndPath(SingleplayerHSFeatures.MOD_ID, resource.path())
+				Identifier.fromNamespaceAndPath("singleplayerhsfeatures", resource.path())
 			);
 			Item.Properties properties = new Item.Properties()
 				.setId(key)
