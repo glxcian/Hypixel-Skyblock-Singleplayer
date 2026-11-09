@@ -108,6 +108,7 @@ public enum SkyBlockRarity {
 		if (path.endsWith("_axe")) return " AXE";
 		if (path.endsWith("_hoe")) return " HOE";
 		if (path.endsWith("_sword")) return " SWORD";
+		if (path.endsWith("_spear")) return " SPEAR";
 		return switch (path) {
 			case "bow" -> " BOW";
 			case "crossbow" -> " CROSSBOW";
