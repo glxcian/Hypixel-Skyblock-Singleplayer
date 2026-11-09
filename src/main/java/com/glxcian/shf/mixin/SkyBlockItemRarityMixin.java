@@ -1,6 +1,5 @@
 package com.glxcian.shf.mixin;
 
-import com.glxcian.shf.SingleplayerHSFeatures;
 import net.minecraft.core.component.DataComponents;
 import net.minecraft.core.registries.BuiltInRegistries;
 import net.minecraft.world.item.ItemStack;
@@ -20,8 +19,12 @@ public abstract class SkyBlockItemRarityMixin {
 	@Inject(method = "getRarity()Lnet/minecraft/world/item/Rarity;", at = @At("HEAD"), cancellable = true)
 	private void singleplayerhsfeatures$preserveSkyBlockRarity(CallbackInfoReturnable<Rarity> cir) {
 		ItemStack stack = (ItemStack) (Object) this;
+		if (com.glxcian.shf.item.CustomItems.isPromisingPickaxe(stack)) {
+			cir.setReturnValue(Rarity.UNCOMMON);
+			return;
+		}
 		if (BuiltInRegistries.ITEM.getKey(stack.getItem()).getNamespace()
-			.equals(SingleplayerHSFeatures.MOD_ID)) {
+			.equals("singleplayerhsfeatures")) {
 			cir.setReturnValue(stack.getOrDefault(DataComponents.RARITY, Rarity.COMMON));
 		}
 	}
