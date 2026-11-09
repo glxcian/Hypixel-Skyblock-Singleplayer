@@ -128,6 +128,7 @@ public final class CollectionRegistry {
 	}
 
 	public static String getItemId(ItemStack stack) {
+		initialize();
 		if (stack.isEmpty()) {
 			return "";
 		}
