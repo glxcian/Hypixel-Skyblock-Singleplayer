@@ -137,8 +137,13 @@ public final class CompactorAutomation {
 	}
 
 	private static boolean matches(ItemStack stack, String itemId) {
-		return !stack.isEmpty()
-			&& CustomItems.getCustomItemId(stack) == null
-			&& BuiltInRegistries.ITEM.getKey(stack.getItem()).toString().equals(itemId);
+		if (stack.isEmpty()) {
+			return false;
+		}
+		String customId = CustomItems.getCustomItemId(stack);
+		if (itemId.startsWith("singleplayerhsfeatures:")) {
+			return itemId.equals(customId);
+		}
+		return customId == null && BuiltInRegistries.ITEM.getKey(stack.getItem()).toString().equals(itemId);
 	}
 }
