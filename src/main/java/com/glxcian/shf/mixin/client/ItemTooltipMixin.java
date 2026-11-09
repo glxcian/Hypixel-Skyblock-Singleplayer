@@ -52,7 +52,7 @@ public abstract class ItemTooltipMixin {
 			.map(enchantment -> enchantment.name().getString())
 			.collect(java.util.stream.Collectors.toSet());
 		lines.removeIf(line -> enchantmentNames.contains(line.getString()));
-		boolean promisingPickaxe = stack.is(com.glxcian.shf.item.CustomItems.PROMISING_PICKAXE);
+		boolean promisingPickaxe = com.glxcian.shf.item.CustomItems.isPromisingPickaxe(stack);
 		if (promisingPickaxe) {
 			Component name = Component.literal("Promising Pickaxe").withStyle(ChatFormatting.GREEN);
 			if (lines.isEmpty()) {
@@ -91,29 +91,21 @@ public abstract class ItemTooltipMixin {
 			}
 			stats.add(damageLine);
 		});
-		boolean efficiencySpeedShown = false;
+		List<Component> enchantmentLines = new ArrayList<>();
 		for (EnchantmentStatEffects.TooltipEnchantment enchantment : enchantments) {
 			if (visibleEnchantmentNames.contains(enchantment.name().getString())) {
-				stats.add(Component.literal("")
+				enchantmentLines.add(Component.literal("")
 					.append(enchantment.name().copy())
 					.append(enchantment.effect())
 					.withStyle(ChatFormatting.BLUE));
-				if (enchantment.id().equals("efficiency")) {
-					int efficiencySpeed = EnchantmentStatEffects.getMiningSpeedBonus(stack);
-					if (efficiencySpeed > 0) {
-						efficiencySpeedShown = true;
-						stats.add(statLabel("\u26cf", ChatFormatting.GOLD, "Mining Speed: ")
-							.append(Component.literal("+" + MiningSpeedStat.getItem(stack))
-								.withStyle(ChatFormatting.GOLD)));
-					}
-				} else if (enchantment.id().equals("fortune")) {
+				if (enchantment.id().equals("fortune")) {
 					int miningFortune = EnchantmentStatEffects.getMiningFortuneBonus(stack);
 					int farmingFortune = EnchantmentStatEffects.getFarmingFortuneBonus(stack);
 					if (miningFortune > 0) {
-						stats.add(statLabel("\u26cf", ChatFormatting.GOLD, "Mining Fortune: ")
+						enchantmentLines.add(statLabel("\u26cf", ChatFormatting.GOLD, "Mining Fortune: ")
 							.append(Component.literal("+" + miningFortune).withStyle(ChatFormatting.GOLD)));
 					} else if (farmingFortune > 0) {
-						stats.add(statLabel("\u2692", ChatFormatting.GOLD, "Farming Fortune: ")
+						enchantmentLines.add(statLabel("\u2692", ChatFormatting.GOLD, "Farming Fortune: ")
 							.append(Component.literal("+" + farmingFortune).withStyle(ChatFormatting.GOLD)));
 					}
 				}
@@ -130,7 +122,7 @@ public abstract class ItemTooltipMixin {
 		int miningSpeed = player == null
 			? MiningSpeedStat.getItem(stack)
 			: MiningSpeedStat.getItem(stack, player);
-		if (miningSpeed > 0 && !efficiencySpeedShown) {
+		if (miningSpeed > 0) {
 			MutableComponent miningSpeedLine = statLabel("\u26cf", ChatFormatting.GOLD, "Mining Speed: ")
 				.append(Component.literal("+" + miningSpeed).withStyle(ChatFormatting.GOLD));
 			if (MiningSpeedConfig.isEstimated(stack)) {
@@ -141,6 +133,10 @@ public abstract class ItemTooltipMixin {
 		if (stack.is(net.minecraft.world.item.Items.TURTLE_HELMET)) {
 			stats.add(statLabel("\u224b", ChatFormatting.BLUE, "Respiration: ")
 				.append(Component.literal("+" + RespirationStat.getItem(stack)).withStyle(ChatFormatting.BLUE)));
+		}
+		if (!enchantmentLines.isEmpty()) {
+			stats.add(Component.empty());
+			stats.addAll(enchantmentLines);
 		}
 		if (promisingPickaxe) {
 			long blocksMined = PromisingPickaxeProgress.getBlocksMined(stack);
