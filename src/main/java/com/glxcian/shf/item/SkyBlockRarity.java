@@ -33,6 +33,9 @@ public enum SkyBlockRarity {
 	private static final Map<String, SkyBlockRarity> VANILLA_RARITIES = Map.ofEntries(
 		Map.entry("minecraft:diamond_pickaxe", UNCOMMON),
 		Map.entry("minecraft:diamond_sword", UNCOMMON),
+		Map.entry("minecraft:diamond_axe", UNCOMMON),
+		Map.entry("minecraft:diamond_shovel", UNCOMMON),
+		Map.entry("minecraft:diamond_hoe", UNCOMMON),
 		Map.entry("minecraft:chainmail_helmet", UNCOMMON),
 		Map.entry("minecraft:chainmail_chestplate", UNCOMMON),
 		Map.entry("minecraft:chainmail_leggings", UNCOMMON),
