@@ -3,7 +3,6 @@ package com.glxcian.shf.item;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 public final class EnchantedResourceCatalog {
 	public static final List<Resource> RESOURCES = List.of(
@@ -84,16 +83,7 @@ public final class EnchantedResourceCatalog {
 		resource("enchanted_lily_pad", "Enchanted Lily Pad", "lily_pad", "minecraft:lily_pad", 160)
 	);
 
-	private static final Set<String> RARE_RESOURCES = Set.of(
-		"enchanted_coal_block",
-		"enchanted_iron_block",
-		"enchanted_gold_block",
-		"enchanted_diamond_block",
-		"enchanted_emerald_block",
-		"enchanted_lapis_lazuli_block",
-		"enchanted_redstone_block",
-		"enchanted_quartz_block"
-	);
+
 
 	private static final Map<String, Resource> BY_PATH;
 	private static final Map<String, Resource> BY_INPUT_ID;
@@ -124,10 +114,22 @@ public final class EnchantedResourceCatalog {
 		return BY_INPUT_ID.get(itemId);
 	}
 
+	private static boolean isRareResource(String path) {
+		return switch (path) {
+			case "enchanted_coal_block",
+				"enchanted_iron_block",
+				"enchanted_gold_block",
+				"enchanted_diamond_block",
+				"enchanted_emerald_block",
+				"enchanted_lapis_lazuli_block",
+				"enchanted_redstone_block",
+				"enchanted_quartz_block" -> true;
+			default -> false;
+		};
+	}
+
 	private static Resource resource(String path, String name, String texture, String inputId, int amount) {
-		SkyBlockRarity rarity = RARE_RESOURCES.contains(path)
-			? SkyBlockRarity.RARE
-			: SkyBlockRarity.UNCOMMON;
+		SkyBlockRarity rarity = isRareResource(path) ? SkyBlockRarity.RARE : SkyBlockRarity.UNCOMMON;
 		return new Resource(path, name, "minecraft:item/" + texture, inputId, amount, rarity);
 	}
 
