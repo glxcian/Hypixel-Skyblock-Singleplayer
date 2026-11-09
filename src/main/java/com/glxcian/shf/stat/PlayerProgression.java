@@ -91,7 +91,11 @@ public final class PlayerProgression {
 	}
 
 	public static int getMiningFortune(Player player) {
-		return getLevel(player, Skill.MINING) * 4;
+		int skillFortune = getLevel(player, Skill.MINING) * 4;
+		int collectionFortune = CollectionProgression.getMiningFortune(
+			"minecraft:obsidian", getCollectionCount(player, "minecraft:obsidian")
+		);
+		return skillFortune + collectionFortune;
 	}
 
 	public static int getFarmingFortune(Player player) {
