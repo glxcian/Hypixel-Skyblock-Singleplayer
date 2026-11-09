@@ -1,6 +1,7 @@
 package com.glxcian.shf.mixin;
 
 import com.glxcian.shf.stat.PlayerProgression;
+import com.glxcian.shf.stat.MiningFortuneStat;
 import com.glxcian.shf.stat.EnchantmentStatEffects;
 import com.glxcian.shf.stat.MiningExperience;
 import com.glxcian.shf.stat.SkillExperience;
@@ -49,10 +50,10 @@ public abstract class BlockMiningProgressionMixin {
 			smeltDrops(drops);
 		}
 		if (farming || miningFortuneAffected) {
-			int fortune = (farming
+			int fortune = farming
 				? PlayerProgression.getFarmingFortune(player)
-				: PlayerProgression.getMiningFortune(player))
-				+ EnchantmentStatEffects.getFortuneBonus(heldTool, farming);
+					+ EnchantmentStatEffects.getFortuneBonus(heldTool, true)
+				: MiningFortuneStat.get(player);
 			applyFortune(drops, fortune, level);
 		}
 		if (smeltingTouch || farming || miningFortuneAffected) {
