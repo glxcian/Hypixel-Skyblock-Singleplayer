@@ -54,6 +54,39 @@ public final class CollectionProgression {
 			new Milestone(25_000, "+1 Mining Fortune"),
 			new Milestone(50_000, "Obsidian Tablet Recipe"),
 			new Milestone(100_000, "+1 Mining Fortune; +50,000 Mining Experience")
+		),
+		"singleplayerhsfeatures:glacite", List.of(
+			new Milestone(100, "+1 Mining Fortune"),
+			new Milestone(1_000, "Enchanted Glacite Recipe; Cold Resistance Potion Recipe"),
+			new Milestone(5_000, "Glacite Amalgamation Dwarven Forge Recipe"),
+			new Milestone(10_000, "Glacite Golem Pet Recipe"),
+			new Milestone(25_000, "Frigid Husk Dwarven Forge Recipe"),
+			new Milestone(50_000, "+1 Mining Fortune"),
+			new Milestone(100_000, "+1 Mining Fortune"),
+			new Milestone(250_000, "+1 Mining Fortune"),
+			new Milestone(500_000, "+10,000 Mining Experience")
+		),
+		"singleplayerhsfeatures:tungsten", List.of(
+			new Milestone(100, "+1 Mining Fortune"),
+			new Milestone(1_000, "Enchanted Tungsten Recipe"),
+			new Milestone(5_000, "Refined Tungsten Dwarven Forge Recipe"),
+			new Milestone(10_000, "Tungsten Key Dwarven Forge Recipe"),
+			new Milestone(25_000, "+1 Mining Fortune"),
+			new Milestone(50_000, "Tungsten Plate Dwarven Forge Recipe"),
+			new Milestone(100_000, "+1 Mining Fortune"),
+			new Milestone(250_000, "+1 Mining Fortune"),
+			new Milestone(500_000, "+1 Mining Fortune")
+		),
+		"singleplayerhsfeatures:umber", List.of(
+			new Milestone(100, "+1 Mining Fortune"),
+			new Milestone(1_000, "Enchanted Umber Recipe"),
+			new Milestone(5_000, "Refined Umber Dwarven Forge Recipe"),
+			new Milestone(10_000, "Umber Key Dwarven Forge Recipe"),
+			new Milestone(25_000, "+1 Mining Fortune"),
+			new Milestone(50_000, "Umber Plate Dwarven Forge Recipe"),
+			new Milestone(100_000, "+1 Mining Fortune"),
+			new Milestone(250_000, "+1 Mining Fortune"),
+			new Milestone(500_000, "Umberella Recipe")
 		)
 	);
 
