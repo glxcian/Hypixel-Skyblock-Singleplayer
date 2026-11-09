@@ -86,13 +86,13 @@ public abstract class ProgressionCommandsMixin {
 			}));
 		commands.getDispatcher().register(Commands.literal("promisingpickaxe")
 			.executes(command -> {
-				giveItem(command.getSource().getPlayerOrException(), CustomItems.PROMISING_PICKAXE, "Promising Pickaxe");
+				givePromisingPickaxe(command.getSource().getPlayerOrException(), false);
 				return 1;
 			})
 			.then(Commands.literal("maxed")
 				.executes(command -> {
 					ServerPlayer player = command.getSource().getPlayerOrException();
-					ItemStack stack = new ItemStack(CustomItems.PROMISING_PICKAXE);
+					ItemStack stack = CustomItems.createPromisingPickaxe();
 					com.glxcian.shf.stat.PromisingPickaxeProgress.setBlocksMined(stack, 2500L);
 					if (!player.getInventory().add(stack) && !stack.isEmpty()) {
 						player.drop(stack, false, net.minecraft.util.Prediction.SERVER_ONLY);
@@ -100,6 +100,19 @@ public abstract class ProgressionCommandsMixin {
 					player.sendSystemMessage(Component.literal("Given a maxed Promising Pickaxe (2,500 blocks mined)."));
 					return 1;
 				})));
+	}
+
+	private static void givePromisingPickaxe(ServerPlayer player, boolean maxed) {
+		ItemStack stack = CustomItems.createPromisingPickaxe();
+		if (maxed) {
+			com.glxcian.shf.stat.PromisingPickaxeProgress.setBlocksMined(stack, 2500L);
+		}
+		if (!player.getInventory().add(stack) && !stack.isEmpty()) {
+			player.drop(stack, false, net.minecraft.util.Prediction.SERVER_ONLY);
+		}
+		player.sendSystemMessage(Component.literal(maxed
+			? "Given a maxed Promising Pickaxe (2,500 blocks mined)."
+			: "Given Promising Pickaxe."));
 	}
 
 	private static void giveItem(ServerPlayer player, Item item, String itemName) {
