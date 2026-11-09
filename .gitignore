@@ -1,0 +1,28 @@
+# Gradle / build output
+.gradle/
+build/
+bin/
+out/
+
+# Minecraft development runtime: never publish local worlds, saves, logs, or configs
+run/
+logs/
+crash-reports/
+saves/
+screenshots/
+
+# IDE-local settings
+.idea/
+.vscode/
+*.iml
+
+# OS/editor files
+.DS_Store
+Thumbs.db
+*.swp
+*.swo
+
+# Local environment and secrets
+.env
+.env.*
+!.env.example

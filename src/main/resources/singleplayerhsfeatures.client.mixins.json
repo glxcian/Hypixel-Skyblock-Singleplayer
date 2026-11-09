@@ -1,0 +1,13 @@
+{
+    "required": true,
+    "package": "com.glxcian.shf.mixin.client",
+    "compatibilityLevel": "JAVA_25",
+    "client": [
+        "HudStatsMixin",
+        "ItemTooltipMixin",
+        "MobNameRenderMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}

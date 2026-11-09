@@ -1,0 +1,32 @@
+{
+    "schemaVersion": 1,
+    "id": "singleplayerhsfeatures",
+    "version": "${version}",
+    "name": "Hypixel SkyBlock Singleplayer Features",
+    "description": "Ports selected Hypixel SkyBlock features to Minecraft singleplayer.",
+    "authors": ["glxcian"],
+    "contact": {
+        "homepage": "https://example.com",
+        "sources": "https://example.com"
+    },
+    "license": "MIT",
+    "icon": "assets/singleplayerhsfeatures/icon.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "com.glxcian.shf.SingleplayerHSFeatures"
+        ]
+    },
+    "mixins": [
+        "singleplayerhsfeatures.mixins.json",
+        {
+            "config": "singleplayerhsfeatures.client.mixins.json",
+            "environment": "client"
+        }
+    ],
+    "depends": {
+        "fabricloader": ">=0.19.0",
+        "minecraft": ">=26.2 <26.4",
+        "java": ">=25"
+    }
+}

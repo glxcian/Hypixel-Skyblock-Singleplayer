@@ -1,0 +1,41 @@
+{
+    "required": true,
+    "package": "com.glxcian.shf.mixin",
+    "compatibilityLevel": "JAVA_25",
+    "mixins": [
+        "AttackCooldownMixin",
+        "ItemDurabilityMixin",
+        "EntityDataAccessMixin",
+        "CustomItemRegistrationMixin",
+        "MobLevelMixin",
+        "MobProfileSpawnMixin",
+        "PlayerHealthMixin",
+        "ServerPlayerHealthMixin",
+        "FoodDataMixin",
+        "EntityMobNameMixin",
+        "LivingEntityDefenseMixin",
+        "PlayerMiningSpeedMixin",
+        "BlockMiningExperienceMixin",
+        "RespirationMixin",
+        "PlayerProgressionMixin",
+        "BlockMiningProgressionMixin",
+        "LivingEntityLootCollectionMixin",
+        "LivingEntityCombatProgressionMixin",
+        "FishingSkillExperienceMixin",
+        "EnchantingSkillExperienceMixin",
+        "AlchemySkillExperienceMixin",
+        "BrewingStandClickExperienceMixin",
+        "TamingSkillExperienceMixin",
+        "CompactorAutomationMixin",
+        "NetherStarMenuMixin",
+        "ProgressionCommandsMixin",
+        "MobDamageDisplayMixin",
+        "EnchantmentMaxLevelMixin",
+        "SkyBlockItemRarityMixin",
+        "FeatherFallingSkyBlockMixin",
+        "FeatherFallingProtectionMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
+}
